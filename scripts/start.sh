@@ -1,13 +1,13 @@
 #!/bin/bash
 
 # ============================================================
-# AbsAdmin 快速启动脚本
+# EduFlow Platform 快速启动脚本
 # ============================================================
 
 set -e
 
 echo "=========================================="
-echo "  AbsAdmin Docker Compose 启动脚本"
+echo "  EduFlow Platform Docker Compose 启动脚本"
 echo "=========================================="
 echo ""
 
@@ -26,7 +26,7 @@ if [ ! -f .env ]; then
 fi
 
 # 检查 JAR 包是否存在
-if [ ! -f target/AbsAdmin.jar ]; then
+if [ ! -f target/EduFlow-Platform.jar ]; then
     echo "📦 JAR 包不存在，开始构建..."
     mvn clean package -DskipTests
     echo "✅ 构建完成"

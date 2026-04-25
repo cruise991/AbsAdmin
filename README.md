@@ -101,8 +101,8 @@
 #### 1. 克隆项目
 
 ```bash
-git clone https://github.com/cruise991/AbsAdmin.git
-cd AbsAdmin
+git clone https://github.com/cruise991/EduFlow-Platform.git
+cd EduFlow-Platform
 ```
 
 #### 2. 初始化数据库
@@ -143,7 +143,7 @@ openai.api-key=your_openai_api_key
 mvn clean package -DskipTests
 
 # 运行应用
-java -jar target/AbsAdmin.jar
+java -jar target/EduFlow-Platform.jar
 ```
 
 应用将在 `http://localhost:8020` 启动
@@ -175,9 +175,9 @@ docker-compose up -d
 ## 📂 项目结构
 
 ```
-AbsAdmin/
+EduFlow-Platform/
 ├── src/main/java/com/
-│   ├── AbsAdminMain.java              # 应用主入口
+│   ├── EduFlowMain.java              # 应用主入口
 │   └── abs/
 │       ├── system/                    # 系统管理模块
 │       │   ├── controller/            # 控制器层（23个）
@@ -471,9 +471,9 @@ docker-compose logs -f app
 
 ## 📞 联系方式
 
-- 项目主页：https://github.com/cruise991/AbsAdmin
-- 问题反馈：[Issues](https://github.com/cruise991/AbsAdmin/issues)
-- Email：2501571227@qq.com
+- 项目主页：https://github.com/cruise991/EduFlow-Platform
+- 问题反馈：[Issues](https://github.com/cruise991/EduFlow-Platform/issues)
+- Email：250242100@qq.com
 
 ---
 
@@ -481,7 +481,7 @@ docker-compose logs -f app
 
 如果这个项目对您有帮助，请给我们一个 Star ⭐
 
-[![Star History Chart](https://api.star-history.com/svg?repos=cruise991/AbsAdmin&type=Date)](https://star-history.com/#cruise991/AbsAdmin&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=cruise991/EduFlow-Platform&type=Date)](https://star-history.com/#cruise991/EduFlow-Platform&Date)
 
 ---
 

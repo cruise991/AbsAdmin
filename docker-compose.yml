@@ -1,7 +1,7 @@
 version: '3.8'
 
 # ============================================================
-# AbsAdmin Docker Compose 配置
+# EduFlow Platform Docker Compose 配置
 # ============================================================
 
 services:
@@ -45,7 +45,7 @@ services:
           memory: 512M
 
   # ----------------------------------------------------------
-  # AbsAdmin Spring Boot 应用服务
+  # EduFlow Platform Spring Boot 应用服务
   # ----------------------------------------------------------
   absadmin:
     build:

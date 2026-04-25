@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # ============================================================
-# AbsAdmin 数据库备份脚本
+# EduFlow Platform 数据库备份脚本
 # ============================================================
 
 set -e
@@ -15,7 +15,7 @@ BACKUP_FILE="$BACKUP_DIR/absframe_backup_$TIMESTAMP.sql"
 mkdir -p "$BACKUP_DIR"
 
 echo "=========================================="
-echo "  AbsAdmin 数据库备份脚本"
+echo "  EduFlow Platform 数据库备份脚本"
 echo "=========================================="
 echo ""
 echo "📅 备份时间: $(date)"

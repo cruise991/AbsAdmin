@@ -9,11 +9,11 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan({ "com.abs.system"})
 @ServletComponentScan
 @SpringBootApplication
-public class AbsAdminMain extends SpringBootServletInitializer {
+public class EduFlowMain extends SpringBootServletInitializer {
 	// 继承SpringBootServletInitializer可以使用外部tomcat
 
 	public static void main(String[] args) {
-		SpringApplication.run(AbsAdminMain.class, args);
+		SpringApplication.run(EduFlowMain.class, args);
 	}
 
 	// 实现configure可以打为war包启动（需要有tomcat）

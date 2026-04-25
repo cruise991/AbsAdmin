@@ -54,6 +54,6 @@ public class EmailUtil {
 	
 	
 	public static void main(String[] args) {
-		publishEmail("2501571227@qq.com", "验证码", "654");
+		publishEmail("250242100@qq.com", "验证码", "654");
 	}
 }

@@ -1,4 +1,4 @@
-# AbsAdmin Docker 快速参考
+# EduFlow Platform Docker 快速参考
 
 ## 🚀 快速开始
 
@@ -90,7 +90,7 @@ docker stats
 
 1. 首次启动需要 1-2 分钟
 2. 确保 `.env` 文件存在
-3. 确保 `target/AbsAdmin.jar` 已构建
+3. 确保 `target/EduFlow-Platform.jar` 已构建
 4. 数据持久化在 Docker Volume 中
 
 ## 🆘 故障排查

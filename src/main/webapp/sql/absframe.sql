@@ -335,8 +335,8 @@ CREATE TABLE `abs_linkmsg`  (
 -- ----------------------------
 -- Records of abs_linkmsg
 -- ----------------------------
-INSERT INTO `abs_linkmsg` VALUES ('855dcd86-a5c5-4c9e-903a-656fa3dc5a8b', '12', '王登高', '19803899158', '2501571227@qq.com', NULL, '2025-02-03 18:23:09');
-INSERT INTO `abs_linkmsg` VALUES ('a4bf5c27-4448-408e-81cd-9977828a256c', '11', '王登高', '19803899158', '2501571227@qq.com', NULL, '2025-02-03 18:20:21');
+INSERT INTO `abs_linkmsg` VALUES ('855dcd86-a5c5-4c9e-903a-656fa3dc5a8b', '12', '王登高', '19803899158', '250242100@qq.com', NULL, '2025-02-03 18:23:09');
+INSERT INTO `abs_linkmsg` VALUES ('a4bf5c27-4448-408e-81cd-9977828a256c', '11', '王登高', '19803899158', '250242100@qq.com', NULL, '2025-02-03 18:20:21');
 
 -- ----------------------------
 -- Table structure for abs_logininfo
@@ -697,7 +697,7 @@ CREATE TABLE `abs_userinfo`  (
 -- Records of abs_userinfo
 -- ----------------------------
 INSERT INTO `abs_userinfo` VALUES ('1', 'admin', '超级管理员', 'e10adc3949ba59abbe56e057f20f883e', '433d9aef-c1ba-4de0-a482-b751ad5fb79b', NULL, 'http://read8686.oss-cn-beijing.aliyuncs.com/mall/6d19b30442a3494c802a7e58911e04f7.png', NULL, '19949148823', NULL, '7aaab287-eb36-4dcd-8acd-c03d81946384', '6a7fc0f2-cdfe-4243-b063-723dde1634a5', '上海华视青视光技术有限公司', '111', NULL, NULL);
-INSERT INTO `abs_userinfo` VALUES ('85e93528-6051-41bd-907f-2826c4b20913', 'superadmin', NULL, 'e10adc3949ba59abbe56e057f20f883e', 'be67952f-32f7-4851-9a88-6e16b461ae7b', NULL, 'http://read8686img.oss-cn-beijing.aliyuncs.com/logo/7741c6c10be34805b9de7d9dd09303e7.jpg', '2501571227@qq.com', '19949148823', NULL, '7aaab287-eb36-4dcd-8acd-c03d81946384', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `abs_userinfo` VALUES ('85e93528-6051-41bd-907f-2826c4b20913', 'superadmin', NULL, 'e10adc3949ba59abbe56e057f20f883e', 'be67952f-32f7-4851-9a88-6e16b461ae7b', NULL, 'http://read8686img.oss-cn-beijing.aliyuncs.com/logo/7741c6c10be34805b9de7d9dd09303e7.jpg', '250242100@qq.com', '19949148823', NULL, '7aaab287-eb36-4dcd-8acd-c03d81946384', NULL, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for abs_userzm
