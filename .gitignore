@@ -2,6 +2,9 @@
 # AbsAdmin .gitignore
 # ============================================
 
+# Documentation (本地文档，不上传到 GitHub)
+docs/
+
 # Maven
 target/
 !.mvn/wrapper/maven-wrapper.jar
