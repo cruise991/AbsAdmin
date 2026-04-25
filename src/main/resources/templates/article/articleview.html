@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>好文浏览</title>
+<style type="text/css">
+.container{
+   text-align:center;
+   padding:0px 10px;
+}
+#articlecontent p{
+   margin: 0px 0px 16px;
+   line-height: 29px;
+   font-size: 1.1rem;
+}
+.tjlist{
+   list-style-type: none;
+   padding-left: 0;
+   font-size:1.0rem;
+}
+.tjlist li {
+  text-indent: 1rem;
+}
+</style>
+</head>
+<body>
+	<section>
+		<div class="container">
+				 <div>
+					<h3 id="title3" style="margin-bottom:0px"></h3>
+				</div>
+				<div style="padding:10px 0px;font-family: 楷体;color: #9E9E9E;">
+					<lable>苏佑科技</lable>
+					<lable id="addtime"></lable>
+				</div>
+
+		</div>
+
+		<div class="container">
+			<img src='#' id="fmimg" style="width:-webkit-fill-available"/>
+			<div style="text-align:left" id="articlecontent" ></div>
+				
+		</div>
+
+		
+		 <div style="height:200px;margin-bottom:40px;">
+		       <ul class="tjlist">
+                   <li style="padding:5px;"><a href="#">111</a></li>
+                   <li style="padding:5px;"><a href="#">111</a></li>
+                   <li style="padding:5px;"><a href="#">111</a></li>
+                   <li style="padding:5px;"><a href="#">111</a></li>
+                   <li style="padding:5px;"><a href="#">111</a></li>
+               </ul>
+		 </div>
+		
+
+	<script src="../../www/js/jquery-1.11.0.min.js"></script>
+	<script src="../../www/js/common.js"></script>
+    <script type="text/javascript">
+	$(document).ready(function(){
+	   var aid=getUrlParam("aid")
+	   execFunc("article.querybyid",{"aid":aid},function(res){
+	        if(res.code=='9999'){
+	           location.href="../404.html"
+	        }else{
+	        document.title=res.data.title;
+	            $("#title3").html(res.data.title);
+	            $("#fmimg").attr("src",res.data.fmurl);
+	            $("#author").html(res.data.author);
+	            $("#addtime").html(res.data.addtime);
+	            $("#articlecontent").html(res.data.content);
+	        }
+	   })
+	})
+	</script>
+</body>
+</html>

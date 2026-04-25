@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqls>
+	<sql ID="sysconfig">
+		<i ID="findPageSysConfigList">
+		    <![CDATA[
+		        select rowguid,configname,configvalue,addtime,remark from abs_sysconfig where $like(configname,configname) and $equal(userguid,userguid) order by addtime desc
+		    ]]>
+		</i>
+		<i ID="getTotalCountByName">
+		    <![CDATA[
+		        select count(1) from abs_sysconfig where $like(configname,configname) and $equal(userguid,userguid)
+		    ]]>
+		</i>
+		
+		
+		
+		<i ID="findGlobalSysConfigList">
+		    <![CDATA[
+		        select rowguid,configname,configvalue,addtime,remark from abs_sysconfig where $like(configname,configname) and userguid is null order by addtime desc
+		    ]]>
+		</i>
+		<i ID="getGlobalTotalCountByName">
+		    <![CDATA[
+		        select count(1) from abs_sysconfig where $like(configname,configname) and $equal(userguid,userguid)  and userguid is null
+		    ]]>
+		</i>
+		
+		
+		
+		
+		
+		
+	   <i ID="isExistConfigName">
+		    <![CDATA[
+		        select count(1) from abs_sysconfig where configname={configname} and $unequal(rowguid,rowguid) and $unequal(userguid,userguid)
+		    ]]>
+		</i>
+	    <i ID="deleteConfigByGuid">
+		    <![CDATA[
+		       delete from abs_sysconfig where rowguid={rowguid}
+		    ]]>
+		</i>
+		
+	    <i ID="getConfigMapByGuid">
+		    <![CDATA[
+		       select rowguid,configname,configvalue,addtime,remark from abs_sysconfig where rowguid={rowguid}
+		    ]]>
+		</i>
+		
+		<i ID="getAbsSysConfigByGuid">
+		    <![CDATA[
+		       select rowguid,userguid,configname,configvalue,addtime,remark from abs_sysconfig where rowguid={rowguid}
+		    ]]>
+		</i>
+		
+		<i ID="getAbsSysConfigByConfigNameAndUserGuid">
+		    <![CDATA[
+		       select rowguid,userguid,configname,configvalue,addtime,remark from abs_sysconfig where userguid={userguid} and configname={configname}
+		    ]]>
+		</i>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	   <i ID="getByConfigValueByName">
+		    <![CDATA[
+		       select configvalue from abs_sysconfig where configname={configname} and userguid is null
+		    ]]>
+		</i>
+		
+	    <i ID="getByConfigValueByNameOfUser">
+		    <![CDATA[
+		       select configvalue from abs_sysconfig where configname={configname} and userguid={userguid}
+		    ]]>
+		</i>
+		
+		
+		
+		
+		
+		
+	</sql>
+</sqls>

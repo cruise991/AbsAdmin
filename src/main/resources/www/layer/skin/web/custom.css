@@ -1,0 +1,33 @@
+html #layui_layer_skinwebstylecss {
+	display: none;
+	position: absolute;
+	width: 1989px;
+}
+
+body .layer-ext-iframe {
+	border-radius: 5px;
+	box-shadow: 0 0 0 10px rgba(0, 0, 0, 0.6);
+}
+
+body .layer-ext-iframe .layui-layer-title {
+	background: #fff;
+	border-radius: 5px 5px 0 0;
+	border-bottom: 0 none;
+}
+
+body .layer-ext-iframe .layui-layer-content {
+	border-radius: 0 0 5px 5px;
+}
+
+body .layer-ext-iframe .layui-layer-setwin {
+	right: 0;
+	top: 0;
+	*right: -10px;
+}
+
+body .layer-ext-iframe .layui-layer-setwin .layui-layer-close1 {
+	border-top-right-radius: 5px;
+	background: url("close.png") no-repeat center center #a0a0a0;
+	width: 37px;
+	height: 34px;
+}

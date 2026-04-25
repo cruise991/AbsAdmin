@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学生数据管理</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome CSS -->
+    <link rel="stylesheet" href="../css/font-awesome.min.css">
+    <!-- AdminLTE CSS -->
+    <link rel="stylesheet" href="../css/AdminLTE.min.css">
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="../bootstrap/css/datatables.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="student.css">
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+    <div class="wrapper">
+        <!-- Header -->
+        <header class="main-header">
+            <a href="#" class="logo">
+                <span class="logo-mini"><b>学</b>管</span>
+                <span class="logo-lg"><b>学生数据管理</b></span>
+            </a>
+            <nav class="navbar navbar-static-top">
+                <div class="navbar-custom-menu">
+                    <ul class="nav navbar-nav">
+                        <li>
+                            <a href="#">
+                                <i class="fa fa-user"></i> 管理员
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+
+        <!-- Sidebar -->
+        <aside class="main-sidebar">
+            <section class="sidebar">
+                <ul class="sidebar-menu">
+                    <li class="active">
+                        <a href="student.html">
+                            <i class="fa fa-users"></i> <span>学生管理</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="../class/class.html">
+                            <i class="fa fa-graduation-cap"></i> <span>班级管理</span>
+                        </a>
+                    </li>
+                </ul>
+            </section>
+        </aside>
+
+        <!-- Content Wrapper -->
+        <div class="content-wrapper">
+            <!-- Content Header -->
+            <section class="content-header">
+                <h1>
+                    学生数据管理
+                    <small>学生信息的添加、编辑、删除和导入导出</small>
+                </h1>
+                <ol class="breadcrumb">
+                    <li><a href="#"><i class="fa fa-home"></i> 首页</a></li>
+                    <li class="active">学生管理</li>
+                </ol>
+            </section>
+
+            <!-- Main Content -->
+            <section class="content">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <!-- Box -->
+                        <div class="box box-primary">
+                            <!-- Box Header -->
+                            <div class="box-header with-border">
+                                <h3 class="box-title">学生列表</h3>
+                                <div class="box-tools">
+                                    <!-- 搜索框 -->
+                                    <div class="input-group input-group-sm" style="width: 300px;">
+                                        <input type="text" name="search" class="form-control pull-right" placeholder="搜索姓名/学号">
+                                        <div class="input-group-btn">
+                                            <button type="button" class="btn btn-default"><i class="fa fa-search"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Box Body -->
+                            <div class="box-body">
+                                <!-- 筛选条件 -->
+                                <div class="filter-panel">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>班级</label>
+                                                <select class="form-control" id="classFilter">
+                                                    <option value="">全部班级</option>
+                                                    <!-- 动态加载班级列表 -->
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>性别</label>
+                                                <select class="form-control" id="genderFilter">
+                                                    <option value="">全部性别</option>
+                                                    <option value="1">男</option>
+                                                    <option value="2">女</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>状态</label>
+                                                <select class="form-control" id="statusFilter">
+                                                    <option value="">全部状态</option>
+                                                    <option value="1">在读</option>
+                                                    <option value="0">毕业/离校</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>&nbsp;</label>
+                                                <button type="button" class="btn btn-primary btn-block" id="btnFilter">
+                                                    <i class="fa fa-filter"></i> 筛选
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 操作按钮 -->
+                                <div class="action-panel">
+                                    <button type="button" class="btn btn-success" id="btnAdd">
+                                        <i class="fa fa-plus"></i> 添加学生
+                                    </button>
+                                    <button type="button" class="btn btn-danger" id="btnBatchDelete" disabled>
+                                        <i class="fa fa-trash"></i> 批量删除
+                                    </button>
+                                    <button type="button" class="btn btn-info" id="btnImport">
+                                        <i class="fa fa-upload"></i> 导入
+                                    </button>
+                                    <button type="button" class="btn btn-info" id="btnExport">
+                                        <i class="fa fa-download"></i> 导出
+                                    </button>
+                                    <button type="button" class="btn btn-default" id="btnDownloadTemplate">
+                                        <i class="fa fa-file-excel-o"></i> 下载模板
+                                    </button>
+                                </div>
+
+                                <!-- 学生列表 -->
+                                <table id="studentTable" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th><input type="checkbox" id="selectAll"></th>
+                                            <th>学号</th>
+                                            <th>姓名</th>
+                                            <th>班级</th>
+                                            <th>性别</th>
+                                            <th>状态</th>
+                                            <th>备注</th>
+                                            <th>创建时间</th>
+                                            <th>操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- 动态加载学生列表 -->
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Box Footer -->
+                            <div class="box-footer">
+                                <div class="pagination-panel">
+                                    <!-- 分页控件 -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Add Student Modal -->
+        <div class="modal fade" id="addStudentModal" tabindex="-1" role="dialog" aria-labelledby="addStudentModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="addStudentModalLabel">添加学生</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form id="addStudentForm">
+                            <input type="hidden" id="rowguid">
+                            <div class="form-group">
+                                <label for="studentNo">学号 <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="studentNo" name="studentNo" required>
+                                <div class="text-danger" id="studentNoError"></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="studentName">姓名 <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="studentName" name="studentName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="classguid">班级 <span class="text-danger">*</span></label>
+                                <select class="form-control" id="classguid" name="classguid" required>
+                                    <option value="">请选择班级</option>
+                                    <!-- 动态加载班级列表 -->
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="gender">性别</label>
+                                <select class="form-control" id="gender" name="gender">
+                                    <option value="">请选择性别</option>
+                                    <option value="1">男</option>
+                                    <option value="2">女</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="status">状态</label>
+                                <select class="form-control" id="status" name="status">
+                                    <option value="1">在读</option>
+                                    <option value="0">毕业/离校</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="remark">备注</label>
+                                <textarea class="form-control" id="remark" name="remark" rows="3"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-primary" id="btnSaveStudent">保存</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Import Modal -->
+        <div class="modal fade" id="importModal" tabindex="-1" role="dialog" aria-labelledby="importModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="importModalLabel">导入学生信息</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form id="importForm" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label for="importFile">上传文件 <span class="text-danger">*</span></label>
+                                <input type="file" class="form-control" id="importFile" name="file" accept=".xls,.xlsx" required>
+                                <p class="help-block">请选择Excel文件，格式参照导入模板</p>
+                            </div>
+                        </form>
+                        <div id="importResult" style="display: none;">
+                            <h4>导入结果</h4>
+                            <div class="alert alert-success" id="importSuccess"></div>
+                            <div class="alert alert-danger" id="importFail"></div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-primary" id="btnUploadFile">上传</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Export Modal -->
+        <div class="modal fade" id="exportModal" tabindex="-1" role="dialog" aria-labelledby="exportModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="exportModalLabel">导出学生信息</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form id="exportForm">
+                            <div class="form-group">
+                                <label>导出格式</label>
+                                <select class="form-control" id="exportFormat">
+                                    <option value="excel">Excel</option>
+                                    <option value="pdf">PDF</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>导出字段</label>
+                                <div class="checkbox-group">
+                                    <label class="checkbox-inline"><input type="checkbox" name="exportFields" value="studentNo" checked> 学号</label>
+                                    <label class="checkbox-inline"><input type="checkbox" name="exportFields" value="studentName" checked> 姓名</label>
+                                    <label class="checkbox-inline"><input type="checkbox" name="exportFields" value="classguid" checked> 班级ID</label>
+                                    <label class="checkbox-inline"><input type="checkbox" name="exportFields" value="gender" checked> 性别</label>
+                                    <label class="checkbox-inline"><input type="checkbox" name="exportFields" value="status" checked> 状态</label>
+                                    <label class="checkbox-inline"><input type="checkbox" name="exportFields" value="remark"> 备注</label>
+                                    <label class="checkbox-inline"><input type="checkbox" name="exportFields" value="createTime"> 创建时间</label>
+                                    <label class="checkbox-inline"><input type="checkbox" name="exportFields" value="updateTime"> 更新时间</label>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-primary" id="btnExportData">导出</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="../js/jquery-1.11.0.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="../bootstrap/js/bootstrap.min.js"></script>
+    <!-- DataTables JS -->
+    <script src="../bootstrap/js/datatables.min.js"></script>
+    <!-- AdminLTE JS -->
+    <script src="../js/app.min.js"></script>
+    <!-- Custom JS -->
+    <script src="student.js"></script>
+</body>
+</html>

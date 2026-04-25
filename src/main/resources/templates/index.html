@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>流式对话</title>
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f5f5f5;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .header {
+            background-color: #ffffff;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 12px 16px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header h1 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333333;
+        }
+        
+        .chat-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        
+        .message {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            word-wrap: break-word;
+            line-height: 1.4;
+        }
+        
+        .message.user {
+            background-color: #007aff;
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+        
+        .message.assistant {
+            background-color: white;
+            color: #333333;
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .message.loading {
+            background-color: white;
+            color: #999999;
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .typing-indicator {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+        }
+        
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #999999;
+            animation: typing 1.4s infinite;
+        }
+        
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        @keyframes typing {
+            0%, 60%, 100% {
+                transform: translateY(0);
+                opacity: 0.4;
+            }
+            30% {
+                transform: translateY(-10px);
+                opacity: 1;
+            }
+        }
+        
+        .input-container {
+            background-color: white;
+            padding: 12px 16px;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        #message-input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 1px solid #e0e0e0;
+            border-radius: 24px;
+            font-size: 16px;
+            outline: none;
+            resize: none;
+            max-height: 100px;
+        }
+        
+        #send-button {
+            background-color: #007aff;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            outline: none;
+        }
+        
+        #send-button:hover {
+            background-color: #0056b3;
+        }
+        
+        #send-button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        
+        .system-message {
+            text-align: center;
+            color: #999999;
+            font-size: 12px;
+            margin: 8px 0;
+        }
+        
+        .model-selector {
+            margin-top: 8px;
+        }
+        
+        #model-select {
+            padding: 6px 12px;
+            border: 1px solid #e0e0e0;
+            border-radius: 16px;
+            font-size: 14px;
+            background-color: white;
+            color: #333333;
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>流式对话助手</h1>
+        <div class="model-selector">
+            <select id="model-select">
+                <option value="doubao">豆包 (Doubao)</option>
+                <option value="deepseek">深度求索 (DeepSeek)</option>
+                <option value="glm">智谱清言 (GLM)</option>
+            </select>
+        </div>
+    </div>
+    
+    <div class="chat-container" id="chat-container">
+        <div class="system-message">开始对话吧！</div>
+    </div>
+    
+    <div class="input-container">
+        <textarea id="message-input" placeholder="请输入您的问题..." rows="1"></textarea>
+        <button id="send-button">发送</button>
+    </div>
+    
+    <script type="text/javascript">
+         // WebSocket连接管理
+         let ws = null;
+         let isConnected = false;
+         let currentAssistantMessage = null;
+         let currentModel = 'doubao'; // 默认模型
+         let loadingElement = null;
+         
+         // 获取当前选择的模型
+         function getSelectedModel() {
+             const modelSelect = document.getElementById('model-select');
+             return modelSelect.value;
+         }
+         
+         // 初始化WebSocket连接
+         function initWebSocket() {
+             try {
+                 // 根据选择的模型连接到不同的WebSocket端点
+                 const model = getSelectedModel();
+                 let wsPath = '/ws/douban'; // 默认路径
+                 
+                 if (model === 'deepseek') {
+                     wsPath = '/ws/deepseek';
+                 } else if (model === 'glm') {
+                     wsPath = '/ws/glm';
+                 } else if (model === 'doubao') {
+                     wsPath = '/ws/douban';
+                 }
+                 
+                 ws = new WebSocket(`ws://${window.location.host}${wsPath}`);
+                 
+                 ws.onopen = function() {
+                     console.log('WebSocket连接已建立');
+                     isConnected = true;
+                     currentModel = model;
+                 };
+                 
+                 ws.onmessage = function(event) {
+                     const data = JSON.parse(event.data);
+                     
+                     if (data.type === 'data' || data.type === 'chunk') {
+                         // 处理流式数据
+                         if (!currentAssistantMessage) {
+                             currentAssistantMessage = addAssistantMessage('');
+                         }
+                         updateAssistantMessage(currentAssistantMessage, data.content || data.message);
+                     } else if (data.type === 'error') {
+                         // 处理错误
+                         if (currentAssistantMessage) {
+                             updateAssistantMessage(currentAssistantMessage, `\n\n[错误] ${data.content || data.errorMessage}`);
+                             currentAssistantMessage = null;
+                         } else {
+                             addAssistantMessage(`[错误] ${data.content || data.errorMessage}`);
+                         }
+                         hideLoading();
+                         enableSendButton();
+                     } else if (data.type === 'complete') {
+                         // 对话完成
+                         currentAssistantMessage = null;
+                         hideLoading();
+                         enableSendButton();
+                     }
+                 };
+                 
+                 ws.onclose = function() {
+                     console.log('WebSocket连接已关闭');
+                     isConnected = false;
+                     // 只有当当前模型没有变化时才自动重连
+                     if (getSelectedModel() === currentModel) {
+                         setTimeout(initWebSocket, 3000); // 3秒后重连
+                     }
+                 };
+                 
+                 ws.onerror = function(error) {
+                     console.error('WebSocket错误:', error);
+                     isConnected = false;
+                 };
+             } catch (error) {
+                 console.error('WebSocket连接失败:', error);
+                 isConnected = false;
+                 // 只有当当前模型没有变化时才自动重连
+                 if (getSelectedModel() === currentModel) {
+                     setTimeout(initWebSocket, 3000); // 3秒后重连
+                 }
+             }
+         }
+         
+         // 关闭当前WebSocket连接
+         function closeWebSocket() {
+             if (ws && isConnected) {
+                 ws.close();
+                 isConnected = false;
+             }
+         }
+         
+         // 添加用户消息
+         function addUserMessage(content) {
+             const chatContainer = document.getElementById('chat-container');
+             const messageElement = document.createElement('div');
+             messageElement.className = 'message user';
+             messageElement.textContent = content;
+             chatContainer.appendChild(messageElement);
+             scrollToBottom();
+             return messageElement;
+         }
+         
+         // 添加助手消息
+         function addAssistantMessage(content) {
+             const chatContainer = document.getElementById('chat-container');
+             const messageElement = document.createElement('div');
+             messageElement.className = 'message assistant';
+             messageElement.innerHTML = content;
+             chatContainer.appendChild(messageElement);
+             scrollToBottom();
+             return messageElement;
+         }
+         
+         // 更新助手消息
+         function updateAssistantMessage(messageElement, content) {
+             // 追加内容而不是替换，使用innerHTML解析HTML标签
+             messageElement.innerHTML += content;
+             scrollToBottom();
+         }
+         
+         // 显示加载状态
+         function showLoading() {
+             const chatContainer = document.getElementById('chat-container');
+             loadingElement = document.createElement('div');
+             loadingElement.className = 'message loading';
+             loadingElement.innerHTML = `
+                 <div class="typing-indicator">
+                     <div class="typing-dot"></div>
+                     <div class="typing-dot"></div>
+                     <div class="typing-dot"></div>
+                 </div>
+             `;
+             chatContainer.appendChild(loadingElement);
+             scrollToBottom();
+         }
+         
+         // 隐藏加载状态
+         function hideLoading() {
+             if (loadingElement) {
+                 loadingElement.remove();
+                 loadingElement = null;
+             }
+         }
+         
+         // 启用发送按钮
+         function enableSendButton() {
+             const sendButton = document.getElementById('send-button');
+             sendButton.disabled = false;
+         }
+         
+         // 禁用发送按钮
+         function disableSendButton() {
+             const sendButton = document.getElementById('send-button');
+             sendButton.disabled = true;
+         }
+         
+         // 滚动到底部
+         function scrollToBottom() {
+             const chatContainer = document.getElementById('chat-container');
+             chatContainer.scrollTop = chatContainer.scrollHeight;
+         }
+         
+         // 发送消息
+         function sendMessage() {
+             const messageInput = document.getElementById('message-input');
+             const content = messageInput.value.trim();
+             
+             if (!content) return;
+             if (!isConnected) {
+                 alert('连接尚未建立，请稍候再试');
+                 return;
+             }
+             
+             // 添加用户消息
+             addUserMessage(content);
+             
+             // 清空输入框
+             messageInput.value = '';
+             messageInput.rows = 1;
+             
+             // 显示加载状态
+             showLoading();
+             
+             // 禁用发送按钮
+             disableSendButton();
+             
+             // 获取当前选择的模型并映射到实际模型名称
+             const selectedModel = getSelectedModel();
+             let modelName = 'deepseek-chat'; // 默认模型名称
+             
+             if (selectedModel === 'doubao') {
+                 modelName = 'doubao-pro'; // 根据实际情况调整豆包模型名称
+             } else if (selectedModel === 'deepseek') {
+                 modelName = 'deepseek-chat';
+             } else if (selectedModel === 'glm') {
+                 modelName = 'glm-4'; // 根据实际情况调整GLM模型名称
+             }
+             
+             // 发送消息到服务器，使用要求的数据格式
+             ws.send(JSON.stringify({
+                 model: modelName,
+                 messages: [{ role: "user", content: content }],
+                 stream: true,
+                 max_tokens: 2000,
+                 temperature: 0.7
+             }));
+         }
+         
+         // 初始化事件监听
+         document.addEventListener('DOMContentLoaded', function() {
+             const messageInput = document.getElementById('message-input');
+             const sendButton = document.getElementById('send-button');
+             const modelSelect = document.getElementById('model-select');
+             
+             // 输入框自动调整高度
+             messageInput.addEventListener('input', function() {
+                 this.style.height = 'auto';
+                 this.style.height = Math.min(this.scrollHeight, 100) + 'px';
+             });
+             
+             // 发送按钮点击事件
+             sendButton.addEventListener('click', sendMessage);
+             
+             // 回车键发送消息（Shift+Enter换行）
+             messageInput.addEventListener('keydown', function(event) {
+                 if (event.key === 'Enter' && !event.shiftKey) {
+                     event.preventDefault();
+                     sendMessage();
+                 }
+             });
+             
+             // 模型选择变化事件
+             modelSelect.addEventListener('change', function() {
+                 // 关闭当前连接
+                 closeWebSocket();
+                 // 重新初始化WebSocket连接
+                 initWebSocket();
+                 // 显示模型切换消息
+                 const chatContainer = document.getElementById('chat-container');
+                 const systemMessage = document.createElement('div');
+                 systemMessage.className = 'system-message';
+                 systemMessage.textContent = `已切换到 ${modelSelect.options[modelSelect.selectedIndex].text}`;
+                 chatContainer.appendChild(systemMessage);
+                 scrollToBottom();
+             });
+             
+             // 初始化WebSocket连接
+             initWebSocket();
+         });
+    </script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqls>
+    <sql ID="AbsMaterialInfo">
+        <i ID="addMaterial">
+            <![CDATA[
+                INSERT INTO abs_material_info (rowguid, name, type, size, category, duration, word_count, tags, content, file_path, upload_time, status, create_user) 
+                VALUES ({rowguid}, {name}, {type}, {size}, {category}, {duration}, {wordCount}, {tags}, {content}, {filePath}, {uploadTime}, {status}, {createUser})
+            ]]>
+        </i>
+        
+        <i ID="updateMaterial">
+            <![CDATA[
+                UPDATE abs_material_info 
+                SET name = {name}, type = {type}, size = {size}, category = {category}, duration = {duration}, word_count = {wordCount}, tags = {tags}, content = {content}, file_path = {filePath}, upload_time = {uploadTime}, status = {status}, create_user = {createUser} 
+                WHERE rowguid = {rowguid}
+            ]]>
+        </i>
+        
+        <i ID="deleteMaterial">
+            <![CDATA[
+                DELETE FROM abs_material_info WHERE rowguid = {rowguid}
+            ]]>
+        </i>
+        
+        <i ID="queryMaterialById">
+            <![CDATA[
+                SELECT rowguid, name, type, size, category, duration, word_count, tags, content, file_path, upload_time, status, create_user 
+                FROM abs_material_info WHERE rowguid = {rowguid}
+            ]]>
+        </i>
+        
+        <i ID="queryMaterialList">
+            <![CDATA[
+                SELECT rowguid, name, type, size, category, duration, word_count, tags, content, file_path, upload_time, status, create_user 
+                FROM abs_material_info 
+                WHERE 1=1
+                $equal(name, name)
+                $equal(type, type)
+                $equal(category, category)
+                $like(tags, tags)
+                $equal(status, status)
+                ORDER BY upload_time DESC
+                $limit(pageNum, pageSize)
+            ]]>
+        </i>
+        
+        <i ID="queryMaterialCount">
+            <![CDATA[
+                SELECT COUNT(1) 
+                FROM abs_material_info 
+                WHERE 1=1
+                $equal(name, name)
+                $equal(type, type)
+                $equal(category, category)
+                $like(tags, tags)
+                $equal(status, status)
+            ]]>
+        </i>
+        
+        <i ID="queryMaterialByType">
+            <![CDATA[
+                SELECT rowguid, name, type, size, category, duration, word_count, tags, content, file_path, upload_time, status, create_user 
+                FROM abs_material_info 
+                WHERE type = {type}
+                $equal(category, category)
+                $like(name, name)
+                $equal(status, status)
+                ORDER BY upload_time DESC
+                $limit(pageNum, pageSize)
+            ]]>
+        </i>
+    </sql>
+</sqls>

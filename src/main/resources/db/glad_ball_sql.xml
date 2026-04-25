@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqls>
+	<sql ID="gladball">
+		<i ID="queryPageBallList">
+		    <![CDATA[
+		         select cguid,period,publishdate,red_one,red_two,red_three,red_four,red_five,blue_one,blue_two,red_sum,blue_sum,blue_diff from ball_grecord order by publishdate desc
+		    ]]>
+		</i>
+		
+		<i ID="queryCountOfBall">
+		    <![CDATA[
+		         select count(1) from ball_grecord
+		    ]]>
+		</i>
+		
+		<i ID="isExistPeriodData">
+		    <![CDATA[
+		         select count(1) from ball_grecord where period={period}
+		    ]]>
+		</i>
+	 
+	   <i ID="delBallRecordByGuid">
+		    <![CDATA[   
+		       delete from ball_grecord where cguid={cguid}
+		    ]]>
+		</i>
+	</sql>
+</sqls>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqls>
+	<sql ID="vcode">
+		<i ID="isExistVcode">
+		    <![CDATA[
+		         select count(1) from abs_vcode where email={email} and vcode={vcode} and expiredtime>{expiredtime}
+		    ]]>
+		</i>
+	</sql>
+</sqls>

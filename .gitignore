@@ -1,0 +1,106 @@
+# ============================================
+# AbsAdmin .gitignore
+# ============================================
+
+# Maven
+target/
+!.mvn/wrapper/maven-wrapper.jar
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+
+# IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+.settings/
+.project
+.classpath
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Docker
+# 注意：Dockerfile 和 docker-compose.yml 需要保留
+# 但构建产物不需要
+
+# Environment files (包含敏感信息)
+.env
+.env.local
+.env.*.local
+
+# 但保留示例文件
+!.env.example
+
+# Uploads (用户上传的文件)
+uploads/
+app/uploads/
+
+# Drivers (WebDriver 驱动文件，体积大)
+src/main/resources/driver/
+src/main/webapp/driver/
+
+# Font files (可选，如果需要可以注释掉)
+# src/main/resources/font/
+
+# Database files (如果有的话)
+*.db
+*.sqlite
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# Backup files
+*.bak
+*.backup
+
+# Test output
+test-output/
+surefire-reports/
+
+# Node modules (如果有前端构建)
+node_modules/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# OS specific
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Desktop.ini
+
+# Docker Volumes (如果本地有)
+mysql-data/
+nginx-conf/
+
+# 敏感信息文件
+*.pem
+*.key
+*.crt
+secrets/
+
+# Application specific
+# 如果有其他不需要上传的文件，在这里添加

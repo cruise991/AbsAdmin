@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqls>
+	<sql ID="logininfo">
+		<i ID="queryUserGuid">
+		    <![CDATA[
+		        select rowguid,logindate,userinfo,outdate,usertoken,userguid from abs_logininfo where usertoken={usertoken} and outdate is null
+		    ]]>
+		</i>
+		
+		<i ID="loginOut">
+		    <![CDATA[
+		        update abs_logininfo set outdate=now() where usertoken={usertoken}
+		    ]]>
+		</i>
+		
+		<i ID="getLoginLogList">
+		    <![CDATA[
+		        select rowguid,logindate,userinfo,outdate,usertoken,userguid from abs_logininfo 
+		        where 1=1 
+		        <if test="userinfo != null and userinfo != ''">
+		            and userinfo like concat('%',{userinfo},'%')
+		        </if>
+		        <if test="startDate != null">
+		            and logindate >= {startDate}
+		        </if>
+		        <if test="endDate != null">
+		            and logindate <= {endDate}
+		        </if>
+		        order by logindate desc
+		        limit {pageSize} offset {startIndex}
+		    ]]>
+		</i>
+		
+		<i ID="getLoginLogCount">
+		    <![CDATA[
+		        select count(1) from abs_logininfo 
+		        where 1=1 
+		        <if test="userinfo != null and userinfo != ''">
+		            and userinfo like concat('%',{userinfo},'%')
+		        </if>
+		        <if test="startDate != null">
+		            and logindate >= {startDate}
+		        </if>
+		        <if test="endDate != null">
+		            and logindate <= {endDate}
+		        </if>
+		    ]]>
+		</i>
+		
+		<i ID="getLoginLogListByUser">
+		    <![CDATA[
+		        select rowguid,logindate,userinfo,outdate,usertoken,userguid from abs_logininfo 
+		        where userinfo = {userinfo}
+		        order by logindate desc
+		    ]]>
+		</i>
+		
+		<i ID="getLoginInfoByRowguid">
+		    <![CDATA[
+		        select rowguid,logindate,userinfo,outdate,usertoken,userguid from abs_logininfo where rowguid={rowguid}
+		    ]]>
+		</i>
+		
+		<i ID="deleteLoginInfoByRowguid">
+		    <![CDATA[
+		        delete from abs_logininfo where rowguid={rowguid}
+		    ]]>
+		</i>
+		
+	</sql>
+</sqls>

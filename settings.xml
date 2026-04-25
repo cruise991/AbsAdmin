@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings xmlns="http://maven.apache.org/SETTINGS/1.2.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.2.0 
+          https://maven.apache.org/xsd/settings-1.2.0.xsd">
+
+    <!-- 阿里云 Maven 镜像配置 -->
+    <mirrors>
+        <!-- 阿里云公共仓库（主镜像） -->
+        <mirror>
+            <id>aliyun-public</id>
+            <mirrorOf>central</mirrorOf>
+            <name>Aliyun Public Repository</name>
+            <url>https://maven.aliyun.com/repository/public</url>
+        </mirror>
+        
+        <!-- 华为云 Maven 镜像（备选） -->
+        <mirror>
+            <id>huaweicloud</id>
+            <mirrorOf>*</mirrorOf>
+            <name>Huawei Cloud Maven Repository</name>
+            <url>https://repo.huaweicloud.com/repository/maven/</url>
+        </mirror>
+    </mirrors>
+
+    <!-- 配置文件 -->
+    <profiles>
+        <profile>
+            <id>aliyun</id>
+            <repositories>
+                <repository>
+                    <id>central</id>
+                    <url>https://maven.aliyun.com/repository/public</url>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                </repository>
+            </repositories>
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>central</id>
+                    <url>https://maven.aliyun.com/repository/public</url>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                </pluginRepository>
+            </pluginRepositories>
+        </profile>
+        
+        <profile>
+            <id>wagon-http</id>
+            <properties>
+                <maven.wagon.http.ssl.insecure>true</maven.wagon.http.ssl.insecure>
+                <maven.wagon.http.ssl.allowall>true</maven.wagon.http.ssl.allowall>
+                <maven.wagon.http.retryHandler.count>3</maven.wagon.http.retryHandler.count>
+            </properties>
+        </profile>
+    </profiles>
+
+    <!-- 默认激活的配置 -->
+    <activeProfiles>
+        <activeProfile>aliyun</activeProfile>
+        <activeProfile>wagon-http</activeProfile>
+    </activeProfiles>
+
+    <!-- 其他配置 -->
+    <localRepository>/root/.m2/repository</localRepository>
+    
+    <!-- 连接超时和重试配置 -->
+    <servers>
+        <server>
+            <id>central</id>
+            <configuration>
+                <httpConfiguration>
+                    <all>
+                        <connectionTimeout>60000</connectionTimeout>
+                        <readTimeout>120000</readTimeout>
+                        <usePreemptive>true</usePreemptive>
+                    </all>
+                </httpConfiguration>
+            </configuration>
+        </server>
+    </servers>
+
+</settings>

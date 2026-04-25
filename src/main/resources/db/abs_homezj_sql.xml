@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqls>
+	<sql ID="homezj">
+		<i ID="isExistSameCpath">
+		    <![CDATA[
+		        select count(1) from abs_home_zj where cpath={cpath} and $unequal(rowguid,rowguid)
+		    ]]>
+		</i>
+		
+		<i ID="isExistSameHomeUser">
+		    <![CDATA[
+		        select count(1) from abs_home_user where userguid={userguid} and czjguid={czjguid}
+		    ]]>
+		</i>
+		
+		<i ID="delHomezjUserByUserGuidAndZjGuid">
+		    <![CDATA[
+		       delete from abs_home_user where userguid={userguid} and czjguid={czjguid}
+		    ]]>
+		</i>
+		
+		
+		
+		
+		
+		<i ID="getHomezjPageList">
+		    <![CDATA[
+		        select * from abs_home_zj where $like(cname,cname) order by ordernum desc
+		    ]]>
+		</i>
+		
+		
+		<i ID="getHomezjCount">
+		    <![CDATA[
+		         select count(1) from abs_home_zj where $like(cname,cname)
+		    ]]>
+		</i>
+		
+		<i ID="delHomezjByGuid">
+		    <![CDATA[
+		        delete from abs_home_zj where rowguid={rowguid}
+		    ]]>
+		</i>
+	
+		<i ID="queryHomeZjListByUserguid">
+		    <![CDATA[
+		        select rowguid,czjguid,zjname,ordernumber,userguid from abs_home_user where userguid={userguid} order by ordernumber desc
+		    ]]>
+		</i> 
+		
+		<i ID="queryHOmezjMapByGuid">
+		    <![CDATA[
+		        select rowguid,cname,cpath,ordernum,addtime from abs_home_zj where rowguid={rowguid}
+		    ]]>
+		</i>
+
+	</sql>
+</sqls>

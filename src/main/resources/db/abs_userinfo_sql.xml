@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqls>
+	<sql ID="userinfo">
+		<i ID="isUseingRole">
+		    <![CDATA[
+		         select count(1) from abs_userinfo where userrole={userrole}
+		    ]]>
+		</i>
+			
+	    <i ID="getUserListByLoginName">
+		    <![CDATA[
+		         select rowguid,loginname,realname,password,userrole,openid,logourl,email,phone,address,ouguid,remark,addtime,isdelete from abs_userinfo where $like(loginname,loginname) and (isdelete!='1' or isdelete is null)
+		    ]]>
+		</i>
+		
+		<i ID="getTotalCountByLoginName">
+		    <![CDATA[
+		         select count(1) from abs_userinfo where $like(loginname,loginname) and (isdelete!='1' or isdelete is null)
+		    ]]>
+		</i>
+		
+	    <i ID="getUserMapByUsernameAndPassowrd">
+		    <![CDATA[
+		         select rowguid,loginname,realname,password,userrole,openid,logourl,email,phone,address,ouguid,remark,addtime,isdelete from abs_userinfo where loginname={username} and password={password}
+		    ]]>
+		</i>
+		
+		
+		<i ID="getUserMapByEmailAndPassword">
+		    <![CDATA[
+		         select rowguid,loginname,realname,password,userrole,openid,logourl,email,phone,address,ouguid,remark,addtime,isdelete from abs_userinfo where email={email} and password={password}
+		    ]]>
+		</i>
+		
+		
+		<i ID="getUserInfoByOpenid">
+		    <![CDATA[
+		         select rowguid,loginname,realname,password,userrole,openid,logourl,email,phone,address,ouguid,remark,addtime,isdelete from abs_userinfo where openid={openid}
+		    ]]>
+		</i>
+		
+		
+		
+		<i ID="getUserMapByEmail">
+		    <![CDATA[
+		         select rowguid,loginname,realname,password,userrole,openid,logourl,email,phone,address,ouguid,remark,addtime,isdelete from abs_userinfo where email={email}
+		    ]]>
+		</i>
+		
+		
+        <i ID="isExistRealName">
+		    <![CDATA[
+		         select count(1) from abs_userinfo where loginname={loginname}
+		    ]]>
+		</i>
+		
+		 <i ID="isExistEmail">
+		    <![CDATA[
+		         select count(1) from abs_userinfo where email={email}
+		    ]]>
+		</i>
+		
+		
+		<i ID="isExistOpenid">
+		    <![CDATA[
+		         select count(1) from abs_userinfo where openid={openid}
+		    ]]>
+		</i>
+		
+	
+		
+	    <i ID="updateUserLogoByGuid">
+		    <![CDATA[
+		        update abs_userinfo set logourl={url} where rowguid={rowguid}
+		    ]]>
+		</i>
+		
+		
+		<i ID="getUserRoleByGuid">
+		    <![CDATA[
+		       select userrole from abs_userinfo where rowguid={rowguid} 
+		    ]]>
+		</i>
+		
+		
+				
+		<i ID="queryUserMapByGuid">
+		    <![CDATA[
+		       select rowguid,loginname,realname,password,userrole,openid,logourl,email,phone,address,ouguid,remark,addtime,isdelete from abs_userinfo where rowguid={userguid} 
+		    ]]>
+		</i>
+		
+		
+		
+		
+	</sql>
+</sqls>

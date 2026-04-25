@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqls>
+	<sql ID="userzm">
+		<i ID="getUserzmByUserguid">
+		    <![CDATA[
+		        select rowguid,cliengguid,addtime,userguid from abs_userzm where userguid={userguid}
+		    ]]>
+		</i>
+	</sql>
+</sqls>

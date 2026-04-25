@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqls>
+	<sql ID="roleinfo">
+		<i ID="getTotalNumByRoleName">
+		    <![CDATA[
+		         select count(1) from abs_roleinfo where $like(rolename,rolename)
+		    ]]>
+		</i>
+		
+		<i ID="getRolePageListByRoleName">
+		    <![CDATA[
+		         select rowguid,rolename,addtime,ordernum,remark from abs_roleinfo where $like(rolename,rolename)
+		    ]]>
+		</i>
+		
+		<i ID="isExistSameRoleName">
+		    <![CDATA[
+		         select count(1) from abs_roleinfo where rolename={rolename} and $unequal(rowguid,rowguid)
+		    ]]>
+		</i>
+		
+		<i ID="getRoleNameByGuid">
+		    <![CDATA[
+		         select rolename from abs_roleinfo where rowguid={rowguid}
+		    ]]>
+		</i>
+				
+		<i ID="getRoleMaplist">
+		    <![CDATA[
+		         select rowguid,rolename,addtime,ordernum,remark from abs_roleinfo 
+		    ]]>
+		</i>
+		
+		<i ID="deleteRoelViewPermByGuid">
+		    <![CDATA[
+		         delete from abs_roleview_perm where roleguid={roleguid} 
+		    ]]>
+		</i>
+		
+		
+		<i ID="getViewListByRoleGuid">
+		    <![CDATA[
+		       select viewguid from abs_roleview_perm where roleguid={roleguid} 
+		    ]]>
+		</i>
+	</sql>
+</sqls>

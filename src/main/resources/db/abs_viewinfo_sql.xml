@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqls>
+	<sql ID="viewinfo">
+		<i ID="findPageMapByViewName">
+		    <![CDATA[
+		         select rowguid,parentguid,viewname,addtime,url,sortnum,parentname,images,isroot,remark from abs_viewinfo where $like(viewname,viewname) and $equal(isroot,isroot) and  $equal(parentguid,parentguid) order by sortnum desc
+		    ]]>
+		</i>
+		
+		<i ID="getViewCountByViewName">
+		    <![CDATA[
+		         select count(1) from abs_viewinfo where $like(viewname,viewname) and $equal(isroot,isroot) and $equal(parentguid,parentguid)
+		    ]]>
+		</i>
+		
+		<i ID="isExistSameViewName">
+		    <![CDATA[
+		         select count(1) from abs_viewinfo where viewname={viewname} and $unequal(rowguid,rowguid)
+		    ]]>
+		</i>
+		
+	   <i ID="getViewList">
+		    <![CDATA[
+		         select * from abs_viewinfo where isroot={isroot} order by sortnum desc
+		    ]]>
+		</i>
+		
+		
+	   <i ID="getViewListByParentGuid">
+		    <![CDATA[
+		         select rowguid,parentguid,viewname,url,sortnum,parentname,images,isroot from abs_viewinfo where parentguid={parentguid} order by sortnum desc
+		    ]]>
+		</i>
+		
+		
+		<i ID="getViewMapListByIsRoot">
+		    <![CDATA[
+		         select rowguid,viewname,sortnum,images,url,remark from abs_viewinfo where isroot={isroot} order by sortnum desc
+		    ]]>
+		</i>
+		
+		<i ID="deleteViewByGuid">
+		    <![CDATA[
+		        delete from abs_viewinfo where rowguid={rowguid}
+		    ]]>
+		</i>
+		
+		<i ID="getViewListMapByParentGuid">
+		    <![CDATA[
+		        select rowguid,viewname,sortnum,images,url,remark from abs_viewinfo where parentguid={parentguid} order by sortnum desc
+		    ]]>
+		</i>
+		
+		
+		<i ID="findViewInfoByGuid">
+		    <![CDATA[
+		        select * from abs_viewinfo where rowguid={rowguid}
+		    ]]>
+		</i>
+		
+		
+	</sql>
+</sqls>

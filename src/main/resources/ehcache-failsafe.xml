@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd"
+	name="ehcache" updateCheck="false">
+	<cacheManagerPeerProviderFactory class="net.sf.ehcache.distribution.RMICacheManagerPeerProviderFactory" properties="peerDiscovery=manual"></cacheManagerPeerProviderFactory>
+
+	
+	<cache name="sqlcache" 
+	    maxElementsInMemory="1000" 
+	    eternal="true"
+		timeToIdleSeconds="0" 
+		timeToLiveSeconds="0" 
+		overflowToDisk="true"
+		diskSpoolBufferSizeMB="10" 
+		maxElementsOnDisk="10000"
+		diskPersistent="false" 
+		diskExpiryThreadIntervalSeconds="200"
+		memoryStoreEvictionPolicy="FIFO" />
+
+
+
+	<cache name="usertoken" 
+	       maxElementsInMemory="1000"
+		   eternal="true" 
+		   timeToIdleSeconds="0" 
+		   timeToLiveSeconds="0"
+		   overflowToDisk="true" 
+		   diskSpoolBufferSizeMB="10"
+		   maxElementsOnDisk="10000" 
+		   diskPersistent="true"
+		   diskExpiryThreadIntervalSeconds="120"
+		   memoryStoreEvictionPolicy="FIFO">
+		   
+		<cacheEventListenerFactory class="net.sf.ehcache.distribution.RMICacheReplicatorFactory" />
+		<!-- 比一般配置多了这个 -->
+		<bootstrapCacheLoaderFactory class="net.sf.ehcache.distribution.RMIBootstrapCacheLoaderFactory" />
+<!-- 		<diskStore path="d:/ehcache2/" />
+ -->	</cache>
+	
+</ehcache>

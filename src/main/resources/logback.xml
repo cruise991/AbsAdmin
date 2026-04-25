@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration debug="true" scan="true" scanPeriod="30 seconds">
+	<contextName>commons</contextName>
+	<property resource="logback.properties" />
+    
+
+	<appender name="ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<prudent>false</prudent>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${file.dir}/${file.name}.%d{yyyy-MM-dd}.log
+			</fileNamePattern>
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>		<encoder>			<pattern>%date %-5level %logger - %message%n 			</pattern>		</encoder>	</appender>		<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		 <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符-->
+            <pattern>%d{HH:mm:ss.SSS} %-5level %logger{50} - %msg%n</pattern>
+        </encoder>
+	</appender>
+    <logger name="com.apache.ibatis" level="DEBUG"/>	<root level="INFO">		<appender-ref ref="ROLLING" />
+		<!-- 控制台 -->		<appender-ref ref="STDOUT" />	</root>
+</configuration>
+

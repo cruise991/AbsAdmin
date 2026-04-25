@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqls>
+	<sql ID="piclist">
+		<i ID="queryPicPageList">
+		    <![CDATA[
+		         select rowguid,userguid,picurl,addtime,remark from tool_userpic where userguid={userguid} and $like(remark,remark)
+		    ]]>
+		</i>
+		
+		<i ID="queryPicTotalCount">
+		    <![CDATA[
+		         select count(1) from tool_userpic where userguid={userguid} and $like(remark,remark)
+		    ]]>
+		</i>
+	</sql>
+</sqls>

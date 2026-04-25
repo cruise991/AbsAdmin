@@ -1,0 +1,17 @@
+.seat{
+	height:20px;	
+}
+.l_name{
+	display:inline-block;
+	margin-left:10px;
+}
+.form-control{
+	width:36%;
+	display:inline-block;
+}
+.rows{
+	margin-bottom:20px;
+}
+.col-md-4{
+	left:280px;
+}

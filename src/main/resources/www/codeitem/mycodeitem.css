@@ -1,0 +1,200 @@
+.loadmore {
+	cursor: pointer;
+	border: 1px solid;
+	border-radius: 25px;
+	text-align: center;
+	padding: 10px;
+}
+
+.loadmore:hover {
+	color: blue;
+}
+
+.navbar {
+	border: none;
+	border-radius: 0px;
+	min-height: 50px;
+}
+
+.denglu, .zhuce {
+	padding: 10px;
+	text-align: center;
+	border: 1px solid;
+	border-radius: 25px;
+}
+
+.denglu:hover, .zhuce:hover {
+	background: #b5649138;
+	cursor: pointer;
+}
+
+.writexiaoji {
+	padding: 10px;
+	text-align: center;
+	border: 1px solid;
+	border-radius: 25px;
+}
+
+.writexiaoji:hover {
+	background: #b5649138;
+	cursor: pointer;
+}
+
+.labeltxt {
+	text-align: center;
+	font-size: 42px;
+	font-family: 楷体;
+}
+
+.tuiguang {
+	background: #fff;
+	box-sizing: border-box;
+}
+
+body {
+	background-color: #f5f6f7;
+}
+
+img {
+	margin-bottom: 10px;
+}
+
+.div1 {
+	width: 30px;
+	height: 400px;
+	background: #fff;
+	position: absolute;
+	left: 58px;
+	top: 80px;
+	position: fixed;
+	font-size: 18px;
+	text-align: center;
+}
+
+.feedlist_li {
+	padding: 3px 24px;
+	background: #fff;
+	border-bottom: 1px solid #f4f4f4;
+	position: relative;
+	-webkit-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+	list-style: none;
+	margin: 0;
+}
+
+.feedlist_li a {
+	color: #3d3d3d;
+	display: block;
+	line-height: 24px;
+	height: 24px;
+	word-wrap: break-word;
+	word-break: break-all;
+	color: #3d3d3d;
+	font-size: 18px;
+	font-weight: bold;
+}
+
+.feedlist_li dt {
+	float: left;
+	margin: 0px 6px;
+	display: block;
+}
+
+.feedlist_li dd {
+	float: left;
+	font-size: 13px;
+	color: #8a8a8a;
+	line-height: 24px
+}
+
+.summary {
+	margin-bottom: 4px;
+	font-size: 13px;
+	color: #8a8a8a;
+	line-height: 24px
+}
+
+.user_img {
+	position: relative;
+	display: inline-block;
+	margin-right: 28px;
+}
+
+.list_userbar img {
+	width: 30px;
+	height: 30px;
+	position: absolute;
+	z-index: 2;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	border: 1px solid rgba(0, 0, 0, 0.05);
+	border-radius: 50%
+}
+
+.name a {
+	float: left;
+	font-size: 13px;
+	color: #8a8a8a;
+	line-height: 10px;
+	margin-right: 20px;
+}
+
+.interval {
+	float: left;
+	width: 2px;
+	height: 2px;
+	border-radius: 50%;
+	background-color: #adadad;
+	margin-top: 10px;
+	margin-left: 12px;
+	margin-right: 12px;
+}
+
+.time {
+	float: left;
+	font-size: 13px;
+	color: #8a8a8a;
+	line-height: 24px;
+}
+
+.read_num .text, .num {
+	float: right;
+	font-size: 13px;
+	color: #8a8a8a;
+	font-size: 13px;
+}
+
+.common_num .text, .num {
+	float: right;
+	font-size: 13px;
+	color: #8a8a8a;
+}
+
+.floatR {
+	float: right;
+}
+
+.tuiguang h3 {
+	cursor: pointer;
+}
+
+h3:hover {
+	background-color: #f8f8f8;
+}
+
+.searchinput {
+	font-size: 12px;
+	color: #999;
+	padding: 4px 0 4px 7px;
+	border: 1px solid #CCC;
+	width: 160px;
+	height: 24px;
+	border-radius: 4px;
+}
+
+.wbtn {
+	padding: 1px 12px;
+
+}

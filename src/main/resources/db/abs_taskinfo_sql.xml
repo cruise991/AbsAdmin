@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqls>
+	 <sql ID="taskinfo">
+		<i ID="getPageTaskInfoList">
+		    <![CDATA[
+		        select rowguid,taskname,taskclass,addtime,runstatus,cronstr,remark,restartflag,restarttime from abs_taskinfo where $like(taskname,taskname) 
+		    ]]>
+		</i>
+		
+		<i ID="queryTaskCountBytaskName">
+		    <![CDATA[
+		        select count(1) from abs_taskinfo where $like(taskname,taskname) 
+		    ]]>
+		</i>
+		
+		<i ID="isExistTaskInfo">
+		    <![CDATA[
+		        select count(1) from abs_taskinfo where taskclass={taskclass} and rowguid!={rowguid} 
+		    ]]>
+		</i>
+
+	   <i ID="getTaskList">
+		    <![CDATA[
+		        select rowguid,taskname,taskclass,addtime,runstatus,cronstr,remark,restartflag,restarttime from abs_taskinfo 
+		    ]]>
+		</i>
+		
+		
+		
+		<i ID="removeTaskByCode">
+		    <![CDATA[
+		         delete from abs_taskinfo where userguid={userguid} and ccode={ccode}
+		    ]]>
+		</i>
+		
+		
+	  <i ID="queryTaskMapByGuid">
+		    <![CDATA[
+		        select rowguid,taskname,taskclass,addtime,runstatus,cronstr,remark,restartflag,restarttime from abs_taskinfo  where rowguid={rowguid}
+		    ]]>
+		</i>
+		
+	</sql>
+</sqls>

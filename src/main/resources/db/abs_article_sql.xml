@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqls>
+	<sql ID="article">
+		<i ID="getArtilceInfoByGuid">
+		    <![CDATA[
+		         select id,rowguid,title,content,author,btype,summary,fmguid,status,addtime from abs_article where rowguid={rowguid}
+		    ]]>
+		</i>
+		
+		<i ID="getArticlePageList">
+		    <![CDATA[
+		         select id,rowguid,title,author,btype,summary,fmguid,status,addtime from abs_article order by addtime desc 
+		    ]]>
+		</i>
+		
+		<i ID="getArticleCount">
+		    <![CDATA[
+		         select count(1) from abs_article order by addtime desc 
+		    ]]>
+		</i>
+		
+		
+		<i ID="delArticleByGuid">
+		    <![CDATA[
+		         delete from abs_article where rowguid={rowguid} 
+		    ]]>
+		</i>
+		
+		<i ID="queryArticleById">
+		    <![CDATA[
+		         select id,rowguid,title,content,author,btype,summary,fmguid,fmurl,status,addtime from abs_article where id={id} 
+		    ]]>
+		</i>
+		
+		
+		<i ID="delArticleByUserGuidAnsStatus">
+		    <![CDATA[
+		         delete from abs_article where status={status} and author={author}
+		    ]]>
+		</i>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</sql>
+</sqls>

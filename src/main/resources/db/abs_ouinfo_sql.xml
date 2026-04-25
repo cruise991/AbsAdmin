@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqls>
+	<sql ID="ouinfo">
+		<i ID="getOuPageListByOuName">
+		    <![CDATA[
+		        select rowguid,ouname,oucode,ouaddresstel,oubankaccount,remark,addtime from abs_ouinfo where $like(ouname,ouname)
+		    ]]>
+		</i>
+	
+	
+		<i ID="queryTotalCount">
+		    <![CDATA[
+		        select count(1) from abs_ouinfo where $like(ouname,ouname)
+		    ]]>
+		</i>
+		
+		
+		<i ID="isExistSameOuName">
+		    <![CDATA[
+		        select count(1) from abs_ouinfo where ouname={ouname} and $unequal(rowguid,rowguid)
+		    ]]>
+		</i>	
+		
+		
+		
+		<i ID="delOuByGuid">
+		    <![CDATA[
+		      delete from abs_ouinfo where rowguid={rowguid}
+		    ]]>
+		</i>
+		
+		<i ID="queryOuInfoByGuid">
+		    <![CDATA[
+		      select rowguid,ouname,oucode,ouaddresstel,oubankaccount,remark,addtime from abs_ouinfo where rowguid={rowguid}
+		    ]]>
+		</i>	
+		
+		<i ID="queryOuList">
+		    <![CDATA[
+		      select rowguid,ouname,oucode,ouaddresstel,oubankaccount,remark,addtime from abs_ouinfo order by addtime desc
+		    ]]>
+		</i>		
+	</sql>
+</sqls>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqls>
+	<sql ID="wxmallgoods">
+		<i ID="queryWxGoodList">
+		    <![CDATA[
+		         select rowguid,shopname,goodsname,goodstype,typename,lowprice,sendname,sendfrom,fmurl,sellnum,addtime from mall_goods where $like(goodsname,goodsname)  order by addtime desc
+		    ]]>
+		</i>
+		
+		<i ID="queryWxGoodsCount">
+		    <![CDATA[
+		         select count(1) from mall_goods where $like(goodsname,goodsname)
+		    ]]>
+		</i>
+		
+		
+		<i ID="queryGoodsInfoByGuid">
+		    <![CDATA[
+		         select rowguid,shopguid,shopname,goodsname,goodstype,typename,lowprice,sendtype,sendname,sendfrom,fmurl,sellnum,sellstatus,addtime,remark from mall_goods where rowguid={goodsguid}
+		    ]]>
+		</i>
+		
+		<i ID="queryGoodsGGxhByGuid">
+		    <![CDATA[
+		         select rowguid,goodsguid,ggxhname,sellprice,goodskc,picurl from mall_goods_ggxh where goodsguid={goodsguid}
+		    ]]>
+		</i>
+		
+		
+		
+		
+		
+		
+	</sql>
+</sqls>

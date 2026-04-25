@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqls>
+	<sql ID="holiday">
+		<i ID="queryHolidayInfoByEventGuid">
+		    <![CDATA[
+		        select rowguid,userguid,eventguid,startdate,startrang,enddate,endrang,type,reason addtime from abs_holiday where $equal(eventguid,eventguid)
+		    ]]>
+		</i>	
+	</sql>
+</sqls>

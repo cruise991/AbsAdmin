@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqls>
+    <sql ID="studentinfo">
+        <!-- 获取学生列表 -->
+        <i ID="getStudentList">
+            <![CDATA[
+                select student_id, student_no, student_name, class_id, gender, status, remark, create_time, update_time 
+                from student_info 
+                where 1=1 
+                <if test="studentName != null and studentName != ''">
+                    and student_name like concat('%',{studentName},'%')
+                </if>
+                <if test="studentNo != null and studentNo != ''">
+                    and student_no like concat('%',{studentNo},'%')
+                </if>
+                <if test="classId != null and classId != ''">
+                    and class_id = {classId}
+                </if>
+                <if test="gender != null">
+                    and gender = {gender}
+                </if>
+                <if test="status != null">
+                    and status = {status}
+                </if>
+                order by create_time desc
+                limit {pageSize} offset {startIndex}
+            ]]>
+        </i>
+
+        <!-- 获取学生总数 -->
+        <i ID="getStudentCount">
+            <![CDATA[
+                select count(1) from student_info 
+                where 1=1 
+                <if test="studentName != null and studentName != ''">
+                    and student_name like concat('%',{studentName},'%')
+                </if>
+                <if test="studentNo != null and studentNo != ''">
+                    and student_no like concat('%',{studentNo},'%')
+                </if>
+                <if test="classId != null and classId != ''">
+                    and class_id = {classId}
+                </if>
+                <if test="gender != null">
+                    and gender = {gender}
+                </if>
+                <if test="status != null">
+                    and status = {status}
+                </if>
+            ]]>
+        </i>
+
+        <!-- 根据学生ID获取学生信息 -->
+        <i ID="getStudentById">
+            <![CDATA[
+                select student_id, student_no, student_name, class_id, gender, status, remark, create_time, update_time 
+                from student_info 
+                where student_id = {studentId}
+            ]]>
+        </i>
+
+        <!-- 检查学号是否已存在 -->
+        <i ID="isStudentNoExist">
+            <![CDATA[
+                select count(1) from student_info where student_no = {studentNo}
+            ]]>
+        </i>
+
+        <!-- 检查学号是否已存在（排除指定学生ID） -->
+        <i ID="isStudentNoExistExclude">
+            <![CDATA[
+                select count(1) from student_info where student_no = {studentNo} and student_id != {studentId}
+            ]]>
+        </i>
+
+        <!-- 添加学生信息 -->
+        <i ID="addStudent">
+            <![CDATA[
+                insert into student_info (student_id, student_no, student_name, class_id, gender, status, remark, create_time, update_time)
+                values ({studentId}, {studentNo}, {studentName}, {classId}, {gender}, {status}, {remark}, now(), now())
+            ]]>
+        </i>
+
+        <!-- 更新学生信息 -->
+        <i ID="updateStudent">
+            <![CDATA[
+                update student_info set 
+                    student_no = {studentNo}, 
+                    student_name = {studentName}, 
+                    class_id = {classId}, 
+                    gender = {gender}, 
+                    status = {status}, 
+                    remark = {remark}, 
+                    update_time = now()
+                where student_id = {studentId}
+            ]]>
+        </i>
+
+        <!-- 删除学生信息 -->
+        <i ID="deleteStudent">
+            <![CDATA[
+                delete from student_info where student_id = {studentId}
+            ]]>
+        </i>
+
+        <!-- 批量删除学生信息 -->
+        <i ID="batchDeleteStudents">
+            <![CDATA[
+                delete from student_info where student_id in ({studentIds})
+            ]]>
+        </i>
+
+        <!-- 批量更新学生信息 -->
+        <i ID="batchUpdateStudents">
+            <![CDATA[
+                update student_info set 
+                    <if test="classId != null and classId != ''">
+                        class_id = {classId},
+                    </if>
+                    <if test="status != null">
+                        status = {status},
+                    </if>
+                    update_time = now()
+                where student_id in ({studentIds})
+            ]]>
+        </i>
+
+        <!-- 导出学生信息 -->
+        <i ID="exportStudents">
+            <![CDATA[
+                select student_id, student_no, student_name, class_id, gender, status, remark, create_time, update_time 
+                from student_info 
+                where 1=1 
+                <if test="studentName != null and studentName != ''">
+                    and student_name like concat('%',{studentName},'%')
+                </if>
+                <if test="studentNo != null and studentNo != ''">
+                    and student_no like concat('%',{studentNo},'%')
+                </if>
+                <if test="classId != null and classId != ''">
+                    and class_id = {classId}
+                </if>
+                <if test="gender != null">
+                    and gender = {gender}
+                </if>
+                <if test="status != null">
+                    and status = {status}
+                </if>
+                order by create_time desc
+            ]]>
+        </i>
+
+        <!-- 获取班级列表（用于下拉选择） -->
+        <i ID="getClassList">
+            <![CDATA[
+                select class_id, class_name from class_info order by class_name
+            ]]>
+        </i>
+    </sql>
+</sqls>

@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqls>
+	<sql ID="mallgoods">
+		<i ID="getMallGoodsInfoByGuid">
+		    <![CDATA[
+		         select rowguid,goodsname,shopguid,shopname,goodsname,goodstype,typename,lowprice,sendtype,sendname,fmurl,sellnum,sellstatus,addtime,remark from mall_goods where rowguid={rowguid} 
+		    ]]>
+		</i>		
+		
+		<i ID="isExistGoodsGuid">
+		    <![CDATA[
+		         select count(1) from mall_goods_article where goodsguid={goodsguid} 
+		    ]]>
+		</i>
+		
+		
+		<i ID="updateGoodsArticleByGoodsGuid">
+		    <![CDATA[
+		         update mall_goods_article set content={content} where goodsguid={goodsguid} 
+		    ]]>
+		</i>
+		
+	    <i ID="updateGoodsInfoOfFm">
+		    <![CDATA[
+		         update mall_goods set fmurl={fmurl} where rowguid={goodsguid} 
+		    ]]>
+		</i>
+		
+		<i ID="queryFmUrlByGoodsGuid">
+		    <![CDATA[
+		         select fmurl from mall_goods where rowguid={rowguid} 
+		    ]]>
+		</i>
+		
+		<i ID="queryGoodsListByGoodsName">
+		    <![CDATA[
+		         select rowguid,shopguid,goodsname,typename,lowprice,sendname,sendfrom,fmurl,sellnum,sellstatus,addtime,remark from mall_goods where shopguid={shopguid} and $like(goodsname,goodsname) order by addtime desc
+		    ]]>
+		</i>
+
+		<i ID="queryGoodsCountByGoodsName">
+		    <![CDATA[
+		         select count(1) from mall_goods where shopguid={shopguid} and $like(goodsname,goodsname)
+		    ]]>
+		</i>
+		
+		
+		<i ID="querySellGoodsListByGoodsName">
+		    <![CDATA[
+		         select rowguid,shopguid,goodsname,typename,lowprice,sendname,sendfrom,fmurl,sellnum,sellstatus,addtime,remark from mall_goods where shopguid={shopguid} and $like(goodsname,goodsname) and sellstatus='1' order by addtime desc
+		    ]]>
+		</i>
+
+		<i ID="querySellGoodsCountByGoodsName">
+		    <![CDATA[
+		         select count(1) from mall_goods where shopguid={shopguid} and $like(goodsname,goodsname) and sellstatus='1'
+		    ]]>
+		</i>
+		
+		
+		<!-- 根据商品的标识删除对应的文章介绍 -->
+	    <i ID="delGoodsArticleByGoodsguid">
+		    <![CDATA[
+		         delete from mall_goods_article where goodsguid={goodsguid}
+		    ]]>
+		</i>
+
+		
+		
+		<!-- 根据商品的标识删除商品相关的规格型号 -->
+		<i ID="delGoodsGgxhByGoodsguid">
+		    <![CDATA[
+		         update mall_goods_ggxh set isdelete='1' where goodsguid={goodsguid}
+		    ]]>
+		</i>
+		
+		
+		<!-- 根据商品的标识获取到封面的CliengGuid -->
+		<i ID="queryFmCliengguidByGuid">
+		    <![CDATA[
+		         select fmguid from mall_goods where rowguid={goodsguid}
+		    ]]>
+		</i>
+		
+		
+		<!-- 根据商品标识删除商品信息 -->
+		<i ID="delGoodsInfoByGuid">
+		    <![CDATA[
+		         delete from mall_goods where rowguid={goodsguid}
+		    ]]>
+		</i>
+		
+		<i ID="getMallGoodsMapByGuid">
+		    <![CDATA[
+		          select rowguid,shopguid,shopname,goodsname,goodstype,typename,lowprice,sendtype,sendname,sendfrom,fmurl,sellnum,sellstatus,addtime,remark from mall_goods where rowguid={rowguid}
+		    ]]>
+		</i>
+		
+				
+		<i ID="updateGoodsFmInfoByCliengguid">
+		    <![CDATA[
+		         update mall_goods set fmguid='',fmurl='' where fmguid={fmguid}
+		    ]]>
+		</i>
+		
+		<i ID="getMallGoodsGgxhByGoodsGuid">
+		    <![CDATA[
+		         select rowguid,goodsguid,ggxhname,sellprice,goodskc,picurl from mall_goods_ggxh where goodsguid={goodsguid}
+		    ]]>
+		</i>
+		
+		
+		<i ID="getMallGoodsGgxhEntityByGoodsGuid">
+		    <![CDATA[
+		         select rowguid,goodsguid,ggxhname,sellprice,goodskc,picurl from mall_goods_ggxh where goodsguid={goodsguid}
+		    ]]>
+		</i>
+		
+		
+		<i ID="delGoodsGgxhByGoodsGuid">
+		    <![CDATA[
+		         delete from mall_goods_ggxh where goodsguid={goodsguid}
+		    ]]>
+		</i>
+		
+		<i ID="getMallGoodsArticleByGoodsGuid">
+		    <![CDATA[
+		         select rowguid,goodsguid,content from mall_goods_article where goodsguid={goodsguid}
+		    ]]>
+		</i>
+		
+		<i ID="isExistGoodsGuidInArticle">
+		    <![CDATA[
+		         select count(1) from mall_goods_article where goodsguid={goodsguid}
+		    ]]>
+		</i>
+		
+		
+		<i ID="isExistGGxhRowguid">
+		    <![CDATA[
+		         select count(1) from mall_goods_ggxh where rowguid={rowguid}
+		    ]]>
+		</i>
+		
+		
+		<i ID="queryGoodGgxhMapByGuid">
+		    <![CDATA[
+		         select rowguid,goodsguid,ggxhname,sellprice,goodskc,picurl from mall_goods_ggxh where rowguid={ggxhsguid}
+		    ]]>
+		</i>
+		
+		<i ID="queryGoodsInfoByGuid">
+		    <![CDATA[
+		         select rowguid,shopguid,shopname,goodsname,goodstype,typename,lowprice,sendtype,sendname,sendfrom,fmurl,sellnum,sellstatus,addtime,remark from mall_goods where rowguid={goodsguid}
+		    ]]>
+		</i>
+		
+				
+		<i ID="queryCartGoodsList">
+		    <![CDATA[
+		         select rowguid,userguid,goodsguid,goodsname,ggxhguid,ggxhname,shopguid,shopname,buynum,buyprice,totalje,addtime,picurl from mall_cartinfo where userguid={userguid} order by addtime desc
+		    ]]>
+		</i>
+		
+		
+	    <i ID="queryCartGoodsCount">
+		    <![CDATA[
+		         select count(1) from mall_cartinfo where userguid={userguid} order by addtime desc
+		    ]]>
+		</i>
+		
+		
+	</sql>
+</sqls>

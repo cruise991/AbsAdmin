@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqls>
+	<sql ID="flow">
+		<i ID="queryFlowListByMap">
+		    <![CDATA[
+		        select rowguid,flowname,userguid,description,status,addtime,startrole,startname,flowtype,typename,groupname from abs_flowinfo where $like(flowname,flowname) and $equal(status,status)
+		    ]]>
+		</i>
+		
+		<i ID="queryFlowCount">
+		    <![CDATA[
+		        select count(1) from abs_flowinfo  where $like(flowname,flowname) and $equal(status,status)
+		    ]]>
+		</i>
+		
+		<i ID="queryFlowMapByGuid">
+		    <![CDATA[
+		        select rowguid,flowname,flowtype,typename,groupname,grouptype,userguid,description,status,startrole,startname,addtime from abs_flowinfo where rowguid={rowguid}
+		    ]]>
+		</i>
+		
+		<i ID="queryFlowInfoByGuid">
+		    <![CDATA[
+		        select rowguid,flowname,flowtype,typename,groupname,grouptype,userguid,description,status,startrole,startname,addtime from abs_flowinfo where rowguid={rowguid}
+		    ]]>
+		</i>
+		
+		
+		
+		
+		<i ID="queryFlowNodeListByGuid">
+		    <![CDATA[
+		        select rowguid,id,type,position,data,measured,selected,dragging,flowguid from abs_flow_node where flowguid={flowguid}
+		    ]]>
+		</i>
+		
+		<i ID="queryFlowNodeEntityConfig">
+		    <![CDATA[
+		        select rowguid,id,type,position,data,measured,selected,dragging,flowguid from abs_flow_node where flowguid={flowguid} and id={id}
+		    ]]>
+		</i>
+		
+		
+		
+		
+		
+		
+		<i ID="queryFlowEdgeListByGuid">
+		    <![CDATA[
+		        select rowguid,source,sourcehandle,target,id,flowguid from abs_flow_edge where flowguid={flowguid}
+		    ]]>
+		</i>
+		
+		<i ID="deleteNodeByGuid">
+		    <![CDATA[
+		        delete from abs_flow_node where flowguid={flowguid}
+		    ]]>
+		</i>
+		
+		<i ID="deleteEdgeByGuid">
+		    <![CDATA[
+		        delete from abs_flow_edge where flowguid={flowguid}
+		    ]]>
+		</i>
+		
+		<i ID="queryFlowNodeConfig">
+		    <![CDATA[
+		        select rowguid,flowguid,nodeid,label,roleguid,page,action,remark,addtime from abs_flow_nconfig where flowguid={flowguid} and nodeid={nodeid}
+		    ]]>
+		</i>
+		
+		
+		
+		
+		<i ID="updateFlowStatusByGuid">
+		    <![CDATA[
+		        update abs_flowinfo set status={status} where rowguid={rowguid}
+		    ]]>
+		</i>
+		
+		<i ID="isExistFlowConfig">
+		    <![CDATA[
+		        select count(1) from abs_flow_nconfig where flowguid={flowguid} and nodeid={nodeid}
+		    ]]>
+		</i>
+		
+		<i ID="queryFlowStartNodeByGuid">
+		    <![CDATA[
+		        select rowguid,id,type,position,data,measured,selected,dragging,flowguid from abs_flow_node where flowguid={flowguid} and type='input'
+		    ]]>
+		</i>
+		
+		<i ID="queryEdgeTargetByGuid">
+		    <![CDATA[
+		        select target from abs_flow_edge where flowguid={flowguid}  and source={source}
+		    ]]>
+		</i>
+		
+		<i ID="queryFlowNodeByGuidAndId">
+		    <![CDATA[
+		        select rowguid,id,type,position,data,measured,selected,dragging,flowguid from abs_flow_node where flowguid={flowguid} and id={id}
+		    ]]>
+		</i>
+		
+		<i ID="queryFlowProcessList">
+		    <![CDATA[
+		       select nodename,isend,ordernum,flowguid,eventguid from abs_flow_process where $equal(flowguid,flowguid) and eventguid={eventguid} order by ordernum
+		    ]]>
+		</i>
+		
+		<i ID="queryFlowEventByGuid">
+		    <![CDATA[
+		       select rowguid,startname,startuser,grouptype,groupname,flowname,flowguid,pronodeid,pronodename,status,startdate,enddate,flowtype from abs_flow_event where rowguid={rowguid}
+		    ]]>
+		</i>
+		
+		<i ID="queryFlowCurrentStatusByGuid">
+		    <![CDATA[
+		       select status,ordernum from abs_flow_event where rowguid={rowguid}
+		    ]]>
+		</i>
+		
+		<i ID="queryFlowProcessOrderNum">
+		    <![CDATA[
+		       select ordernum from abs_flow_process where eventguid={eventguid} and flowguid={flowguid} and nodeid={nodeid}
+		    ]]>
+		</i>
+		
+		
+		<i ID="getUserFlowEventList">
+		    <![CDATA[
+		       select rowguid,startname,startuser,grouptype,groupname,flowname,flowguid,pronodeid,pronodename,ordernum,status,startdate,enddate,flowtype from abs_flow_event where startuser={startuser} order by startdate desc
+		    ]]>
+		</i>
+		
+		
+		<i ID="queryUserFlowEventCount">
+		    <![CDATA[
+		       select count(1) from abs_flow_event where startuser={startuser}
+		    ]]>
+		</i>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+				
+	</sql>
+</sqls>

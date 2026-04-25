@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+    <prop name="profit"></prop>
+    <prop name="shijing"></prop> 
+    <prop name="liutong"></prop> 
+    <prop name="bkcode"></prop> 
+    <prop name="trade"></prop> 
+    <prop name="increase"></prop> 
+    <prop name="trend"></prop> 
+</root>

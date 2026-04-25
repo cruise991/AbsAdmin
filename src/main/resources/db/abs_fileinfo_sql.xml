@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqls>
+	<sql ID="fileinfo">
+		<i ID="getFileInfoMapListByCliengguid">
+		    <![CDATA[
+		        select rowguid,filepath,fileurl,cliengguid,istoali,firstkey,filename,filetype from abs_fileinfo where cliengguid={cliengguid}
+		    ]]>
+		</i>
+		
+		<i ID="getFileMapByRowGuid">
+		    <![CDATA[
+		        select rowguid,filepath,fileurl,cliengguid,istoali,firstkey,filename,filetype from abs_fileinfo where rowguid={rowguid}
+		    ]]>
+		</i>
+		
+		
+		
+		
+		<i ID="delFileInfoByRowGuid">
+		    <![CDATA[
+		        delete from abs_fileinfo where rowguid={rowguid}
+		    ]]>
+		</i>
+		
+		
+		<i ID="getFileMapListByCliengguid">
+		    <![CDATA[
+		       select rowguid,fileurl,cliengguid,filename,filetype from abs_fileinfo where cliengguid={cliengguid}
+		    ]]>
+		</i>
+		
+	   <i ID="queryPicFileList">
+		    <![CDATA[
+		      select rowguid,fileurl,addtime,firstkey,filename,remark from abs_fileinfo where $equal(userguid,userguid) and $like(remark,remark) and $like(filename,filename) and filetype in ('.png','.jpg') order by addtime desc
+		    ]]>
+		</i>
+		
+		<i ID="queryPicFileCount">
+		    <![CDATA[
+		      select count(1) from abs_fileinfo where $equal(userguid,userguid) and $like(remark,remark) and $like(filename,filename) and filetype in ('.png','.jpg') order by addtime desc
+		    ]]>
+		</i>
+		
+	
+		
+		
+		
+		
+		
+		
+	</sql>
+</sqls>
