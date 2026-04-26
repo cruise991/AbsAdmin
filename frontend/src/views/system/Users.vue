@@ -265,7 +265,7 @@ const loadUserList = async () => {
 // 加载组织列表
 const loadOrgList = async () => {
   try {
-    const response = await request.post('/ouinfo/getouinfolist')
+    const response = await request.post('/ouinfo/getoulist', {})
     if (response.data.code === '0000') {
       orgList.value = response.data.data || []
     }
@@ -277,7 +277,11 @@ const loadOrgList = async () => {
 // 加载角色列表
 const loadRoleList = async () => {
   try {
-    const response = await request.post('/role/getrolelist')
+    const response = await request.post('/role/getlist', {
+      rolename: '',
+      pagenum: 1,
+      pagesize: 1000
+    })
     if (response.data.code === '0000') {
       roleList.value = response.data.data || []
     }
