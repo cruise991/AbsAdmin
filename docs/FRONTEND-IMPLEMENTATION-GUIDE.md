@@ -7,64 +7,40 @@
 
 ## ✅ 已完成的工作
 
-### 1. DeepSeek API 连接问题修复
+### Phase 1 & 2: 核心管理功能完整实现（2026-04-26）
 
-**问题**: DeepSeek API Key 未正确加载到 Docker 容器
+**完成度**: 73% (11/15页面)
 
-**根本原因**:
-- `application.properties` 中硬编码的值 `deepseek.api-key=#` 覆盖了环境变量
-- `.env` 文件格式问题导致值未正确传递
+#### 已完成的页面（11个）
 
-**解决方案**:
-1. ✅ 创建 `application-docker.properties` 配置文件
-2. ✅ 配置从环境变量读取: `deepseek.api-key=${DEEPSEEK_API_KEY:}`
-3. ✅ 更新 `docker-compose.yml` 激活 Docker profile
-4. ✅ 修复 Dockerfile 中的 JAR 文件名 (AbsAdmin.jar → EduFlow-Platform.jar)
-5. ✅ 重写 `.env` 文件确保格式正确
+**基础框架**：
+1. ✅ 登录页面 (`Login.vue`) - 完整的登录验证和Token管理
+2. ✅ 主布局 (`Layout.vue`) - 侧边栏、顶部导航、面包屑
+3. ✅ 仪表盘 (`dashboard/Index.vue`) - 统计数据和图表展示
+4. ✅ AI助手 (`Chat.vue`) - 真实接入DeepSeek API
 
-**验证结果**:
-```bash
-$ docker exec absadmin-app env | grep DEEPSEEK
-DEEPSEEK_API_KEY=sk-f9fda27a50a54db4884769b340ccea01  ✅
-```
+**教育教学模块**（100%）：
+5. ✅ 学生管理 (`student/List.vue`) - 完整CRUD功能
+6. ✅ 班级管理 (`class/List.vue`) - 完整CRUD功能，对接后端API
+7. ✅ 考试管理 (`exam/List.vue`) - 考试链接管理，百度推送
+8. ✅ 成绩管理 (`score/List.vue`) - 成绩展示、搜索、导出Excel
 
-### 2. Vue 3 前端项目初始化
+**系统管理模块**（100%）：
+9. ✅ 用户管理 (`system/Users.vue`) - 完整CRUD，表单验证
+10. ✅ 角色管理 (`system/Roles.vue`) - 完整CRUD，前端分页
+11. ✅ 组织架构 (`system/Organization.vue`) - 组织信息管理
+12. ✅ 菜单权限 (`system/Menu.vue`) - 菜单CRUD，图标配置
+13. ✅ 系统配置 (`system/Config.vue`) - 配置项编辑
 
-**已创建的文件结构**:
-```
-frontend/
-├── package.json                  # 项目配置
-├── vite.config.js                # Vite 配置
-├── index.html                    # 入口 HTML
-└── src/
-    ├── main.js                   # 应用入口
-    ├── App.vue                   # 根组件
-    ├── style.css                 # 全局样式
-    ├── router/
-    │   └── index.js              # 路由配置
-    └── views/
-        ├── Layout.vue            # 主布局（侧边栏+顶部导航）
-        ├── Login.vue             # 登录页面（待创建）
-        ├── dashboard/
-        │   └── Index.vue         # 仪表盘（待创建）
-        ├── system/
-        │   ├── users/Index.vue   # 用户管理（待创建）
-        │   └── roles/Index.vue   # 角色管理（待创建）
-        ├── student/
-        │   └── Index.vue         # 学生管理（待创建）
-        └── AIChat.vue            # AI 助手（待创建）
-```
+**待开发**（4个）：
+- ⏳ 文章管理 (`content/Article.vue`) - Phase 3
+- ⏳ 文件管理 (`content/File.vue`) - Phase 3
+- ⏳ 流程定义 (`workflow/Definition.vue`) - Phase 3
+- ⏳ 流程实例 (`workflow/Instance.vue`) - Phase 3
 
-**已实现的核心功能**:
-- ✅ Vue 3 + Composition API
-- ✅ Vue Router 路由管理
-- ✅ Element Plus UI 组件库
-- ✅ Pinia 状态管理
-- ✅ Axios HTTP 客户端
-- ✅ ECharts 图表库
-- ✅ 路由守卫（登录验证）
-- ✅ 响应式布局（侧边栏+主内容区）
-- ✅ 中文本地化
+### Phase 3: 内容管理和工作流引擎（进行中）
+
+**目标**: 完成剩余4个页面，系统完成度达到100%
 
 ---
 
@@ -514,25 +490,77 @@ VITE_API_BASE_URL=http://localhost:8020
 ## 📊 项目架构
 
 ```
-┌─────────────────────────────────────────┐
-│         浏览器 (http://localhost:3000)    │
-├─────────────────────────────────────────┤
-│  Vue 3 + Element Plus 前端应用            │
-│  - 路由守卫 (登录验证)                     │
-│  - 状态管理 (Pinia)                      │
-│  - HTTP 请求 (Axios)                     │
-├─────────────────────────────────────────┤
-│  Vite Dev Server (代理)                  │
-│  /api/* → http://localhost:8020/*       │
-├─────────────────────────────────────────┤
-│  Spring Boot 后端 (http://localhost:8020)│
-│  - RESTful API                           │
-│  - Token 认证                            │
-│  - 业务逻辑                              │
-├─────────────────────────────────────────┤
-│  MySQL 8.0 数据库                        │
-└─────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────┐
+│  浏览器 (http://localhost:3006)                           │
+├─────────────────────────────────────────────────────────┤
+│  Vue 3 + Element Plus + Pinia 前端应用                    │
+│  - 11个完整功能页面 (73%完成度)                           │
+│  - 路由守卫 (登录验证)                                     │
+│  - 状态管理 (Pinia)                                      │
+│  - HTTP 请求 (Axios + 拦截器)                             │
+│  - Excel 导出 (xlsx)                                     │
+├─────────────────────────────────────────────────────────┤
+│  Docker 容器编排 (docker-compose)                         │
+│  - eduflow-frontend: Nginx (端口 3006)                  │
+│  - absadmin-app: Spring Boot (端口 8020)                │
+│  - absadmin-mysql: MySQL 8.0 (端口 3306)                │
+│  - absadmin-nginx: Nginx反向代理 (端口 80/443)           │
+│  - 统一网络: absadmin-network                            │
+├─────────────────────────────────────────────────────────┤
+│  Spring Boot 后端 (http://localhost:8020)                │
+│  - 23个Controller                                        │
+│  - Token 认证                                            │
+│  - DeepSeek AI 集成                                      │
+│  - RESTful API                                           │
+├─────────────────────────────────────────────────────────┤
+│  MySQL 8.0 数据库 (absframe)                             │
+└─────────────────────────────────────────────────────────┘
 ```
+
+---
+
+## 🔧 重要修复记录
+
+### 2026-04-26: API请求失败修复
+
+**问题**: 所有管理页面提示"请求失败"和"加载列表失败"
+
+**根本原因**:
+1. Token格式错误：前端发送`Bearer {token}`，后端期望`{token}`
+2. 响应拦截器code判断错误：后端返回字符串`"0000"`，前端判断数字`200`
+
+**修复**:
+- ✅ 修正`request.js`：去掉Bearer前缀
+- ✅ 响应拦截器兼容`"0000"`和`200`
+- ✅ 实现真实的Excel导出功能
+
+**文档**: `BUGFIX-API-REQUEST-FAILURE.md`
+
+### 2026-04-26: Docker部署问题修复
+
+**问题**: Docker环境中仍显示占位页面
+
+**根本原因**: Vite构建输出目录配置错误，部署了旧文件
+
+**修复**:
+- ✅ 修正`vite.config.js`：`outDir: 'dist'`
+- ✅ 清理并重新构建
+- ✅ 重新部署到Docker
+
+**文档**: `BUGFIX-DOCKER-DEPLOYMENT.md`
+
+### 2026-04-26: Docker容器统一管理
+
+**问题**: eduflow-frontend脱离docker-compose成为独立容器
+
+**根本原因**: 使用`docker run`手动创建容器
+
+**修复**:
+- ✅ 删除独立容器
+- ✅ 通过`docker compose up -d frontend`重新创建
+- ✅ 所有容器统一在absadmin项目下管理
+
+**经验**: 已记录到记忆库，严禁使用`docker run`
 
 ---
 
@@ -591,6 +619,6 @@ VITE_API_BASE_URL=http://localhost:8020
 
 ---
 
-**文档版本**: v1.0  
-**最后更新**: 2026-04-24  
-**状态**: 基础框架已完成，核心页面待创建
+**文档版本**: v2.0  
+**最后更新**: 2026-04-26  
+**状态**: Phase 1&2已完成 ✅ | 系统功能完成度73% | 进入Phase 3开发

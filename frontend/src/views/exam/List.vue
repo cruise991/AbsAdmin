@@ -153,12 +153,12 @@ const loadList = async () => {
       pagesize: pagination.pageSize
     })
     
-    if (response.data.code === '0000') {
+    if (response.code === '0000') {
       // 后端返回格式：{ code: '0000', data: [...], totalcount: N }
-      tableData.value = response.data.data || []
-      pagination.total = response.data.totalcount || 0
+      tableData.value = response.data || []
+      pagination.total = response.totalcount || 0
     } else {
-      ElMessage.error(response.data.msg || response.data.message || '获取列表失败')
+      ElMessage.error(response.msg || response.message || '获取列表失败')
     }
   } catch (error) {
     console.error('加载列表失败:', error)
@@ -203,11 +203,11 @@ const handleDelete = (row) => {
         rowguid: row.rowguid
       })
       
-      if (response.data.code === '0000') {
+      if (response.code === '0000') {
         ElMessage.success('删除成功')
         loadList()
       } else {
-        ElMessage.error(response.data.msg || response.data.message || '删除失败')
+        ElMessage.error(response.msg || response.message || '删除失败')
       }
     } catch (error) {
       console.error('删除失败:', error)
@@ -232,11 +232,11 @@ const handlePush = (row) => {
         rowguid: row.rowguid
       })
       
-      if (response.data.code === '0000') {
+      if (response.code === '0000') {
         ElMessage.success('推送成功')
         loadList()
       } else {
-        ElMessage.error(response.data.msg || response.data.message || '推送失败')
+        ElMessage.error(response.msg || response.message || '推送失败')
       }
     } catch (error) {
       console.error('推送失败:', error)
@@ -256,12 +256,12 @@ const handleSubmit = async () => {
     try {
       const response = await request.post('/tsinfo/addsiteurl', form)
       
-      if (response.data.code === '0000') {
+      if (response.code === '0000') {
         ElMessage.success('新增成功')
         dialogVisible.value = false
         loadList()
       } else {
-        ElMessage.error(response.data.msg || response.data.message || '操作失败')
+        ElMessage.error(response.msg || response.message || '操作失败')
       }
     } catch (error) {
       console.error('提交失败:', error)

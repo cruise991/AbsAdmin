@@ -247,12 +247,12 @@ const loadUserList = async () => {
       pagesize: pagination.pageSize
     })
     
-    if (response.data.code === '0000') {
+    if (response.code === '0000') {
       // 后端返回格式：{ code: '0000', data: [...], totalcount: N }
-      tableData.value = response.data.data || []
-      pagination.total = response.data.totalcount || 0
+      tableData.value = response.data || []
+      pagination.total = response.totalcount || 0
     } else {
-      ElMessage.error(response.data.msg || response.data.message || '获取用户列表失败')
+      ElMessage.error(response.msg || response.message || '获取用户列表失败')
     }
   } catch (error) {
     console.error('加载用户列表失败:', error)
@@ -266,8 +266,8 @@ const loadUserList = async () => {
 const loadOrgList = async () => {
   try {
     const response = await request.post('/ouinfo/getoulist', {})
-    if (response.data.code === '0000') {
-      orgList.value = response.data.data || []
+    if (response.code === '0000') {
+      orgList.value = response.data || []
     }
   } catch (error) {
     console.error('加载组织列表失败:', error)
@@ -282,8 +282,8 @@ const loadRoleList = async () => {
       pagenum: 1,
       pagesize: 1000
     })
-    if (response.data.code === '0000') {
-      roleList.value = response.data.data || []
+    if (response.code === '0000') {
+      roleList.value = response.data || []
     }
   } catch (error) {
     console.error('加载角色列表失败:', error)
@@ -345,11 +345,11 @@ const handleDelete = (row) => {
         rowguid: row.rowguid
       })
       
-      if (response.data.code === '0000') {
+      if (response.code === '0000') {
         ElMessage.success('删除成功')
         loadUserList()
       } else {
-        ElMessage.error(response.data.message || '删除失败')
+        ElMessage.error(response.message || '删除失败')
       }
     } catch (error) {
       console.error('删除失败:', error)
@@ -383,12 +383,12 @@ const handleSubmit = async () => {
         response = await request.post('/user/adduser', data)
       }
       
-      if (response.data.code === '0000') {
+      if (response.code === '0000') {
         ElMessage.success(isEdit.value ? '编辑成功' : '新增成功')
         dialogVisible.value = false
         loadUserList()
       } else {
-        ElMessage.error(response.data.message || '操作失败')
+        ElMessage.error(response.message || '操作失败')
       }
     } catch (error) {
       console.error('提交失败:', error)

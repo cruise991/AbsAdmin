@@ -19,6 +19,12 @@ COPY nginx.conf /etc/nginx/conf.d/default.conf
 RUN chown -R nginx:nginx /usr/share/nginx/html && \
     chmod -R 755 /usr/share/nginx/html
 
+# 创建启动脚本，清除代理环境变量
+RUN echo '#!/bin/sh' > /docker-entrypoint.sh && \
+    echo 'unset http_proxy https_proxy HTTP_PROXY HTTPS_PROXY' >> /docker-entrypoint.sh && \
+    echo 'exec nginx -g "daemon off;"' >> /docker-entrypoint.sh && \
+    chmod +x /docker-entrypoint.sh
+
 # 暴露端口
 EXPOSE 80
 
@@ -26,5 +32,5 @@ EXPOSE 80
 HEALTHCHECK --interval=30s --timeout=3s --retries=3 \
   CMD wget --quiet --tries=1 --spider http://127.0.0.1:80/ || exit 1
 
-# 启动 Nginx
-CMD ["nginx", "-g", "daemon off;"]
+# 启动 Nginx（使用自定义脚本清除代理）
+CMD ["/docker-entrypoint.sh"]

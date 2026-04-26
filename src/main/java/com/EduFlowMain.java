@@ -6,7 +6,7 @@ import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.ComponentScan;
 
-@ComponentScan({ "com.abs.system"})
+@ComponentScan({ "com.abs.system", "com.abs.article", "com.abs.openapi" })
 @ServletComponentScan
 @SpringBootApplication
 public class EduFlowMain extends SpringBootServletInitializer {
