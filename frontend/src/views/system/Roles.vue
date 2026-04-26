@@ -11,13 +11,30 @@
         </div>
       </template>
       
+      <!-- 搜索栏 -->
+      <el-form :inline="true" :model="searchForm" class="search-form">
+        <el-form-item label="角色名称">
+          <el-input v-model="searchForm.rolename" placeholder="请输入角色名称" clearable />
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="handleSearch">
+            <el-icon><Search /></el-icon>
+            搜索
+          </el-button>
+          <el-button @click="handleReset">重置</el-button>
+        </el-form-item>
+      </el-form>
+      
       <!-- 数据表格 -->
       <el-table :data="tableData" border stripe v-loading="loading">
-        <el-table-column prop="id" label="ID" width="80" />
-        <el-table-column prop="roleName" label="角色名称" width="150" />
-        <el-table-column prop="roleCode" label="角色编码" width="150" />
-        <el-table-column prop="description" label="描述" />
-        <el-table-column prop="createTime" label="创建时间" width="180" />
+        <el-table-column prop="rowguid" label="ID" width="100" show-overflow-tooltip />
+        <el-table-column prop="rolename" label="角色名称" width="200" />
+        <el-table-column prop="roledesc" label="角色描述" min-width="300" show-overflow-tooltip />
+        <el-table-column prop="addtime" label="创建时间" width="180">
+          <template #default="{ row }">
+            {{ formatDateTime(row.addtime) }}
+          </template>
+        </el-table-column>
         <el-table-column label="操作" width="200" fixed="right">
           <template #default="{ row }">
             <el-button link type="primary" size="small" @click="handleEdit(row)">
@@ -50,14 +67,17 @@
       width="600px"
     >
       <el-form :model="form" :rules="rules" ref="formRef" label-width="100px">
-        <el-form-item label="角色名称" prop="roleName">
-          <el-input v-model="form.roleName" placeholder="请输入角色名称" />
+        <el-form-item label="角色名称" prop="rolename">
+          <el-input v-model="form.rolename" placeholder="请输入角色名称" />
         </el-form-item>
-        <el-form-item label="角色编码" prop="roleCode">
-          <el-input v-model="form.roleCode" placeholder="请输入角色编码" />
-        </el-form-item>
-        <el-form-item label="描述" prop="description">
-          <el-input v-model="form.description" type="textarea" :rows="3" placeholder="请输入描述" />
+        
+        <el-form-item label="角色描述" prop="roledesc">
+          <el-input 
+            v-model="form.roledesc" 
+            type="textarea" 
+            :rows="4" 
+            placeholder="请输入角色描述" 
+          />
         </el-form-item>
       </el-form>
       <template #footer>
@@ -73,12 +93,19 @@
 <script setup>
 import { ref, reactive, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
+import request from '@/api/request'
 
 const loading = ref(false)
 const submitLoading = ref(false)
 const dialogVisible = ref(false)
 const dialogTitle = ref('')
 const formRef = ref(null)
+const isEdit = ref(false)
+
+// 搜索表单
+const searchForm = reactive({
+  rolename: ''
+})
 
 // 分页
 const pagination = reactive({
@@ -88,60 +115,80 @@ const pagination = reactive({
 })
 
 // 表格数据
-const tableData = ref([
-  {
-    id: 1,
-    roleName: '管理员',
-    roleCode: 'admin',
-    description: '系统管理员，拥有所有权限',
-    createTime: '2024-01-01 10:00:00'
-  },
-  {
-    id: 2,
-    roleName: '教师',
-    roleCode: 'teacher',
-    description: '教师角色，可以管理学生和成绩',
-    createTime: '2024-01-02 10:00:00'
-  },
-  {
-    id: 3,
-    roleName: '学生',
-    roleCode: 'student',
-    description: '学生角色，可以查看自己的信息',
-    createTime: '2024-01-03 10:00:00'
-  }
-])
+const tableData = ref([])
 
 // 表单数据
 const form = reactive({
-  id: null,
-  roleName: '',
-  roleCode: '',
-  description: ''
+  rowguid: '',
+  rolename: '',
+  roledesc: ''
 })
 
 // 表单验证规则
 const rules = {
-  roleName: [
-    { required: true, message: '请输入角色名称', trigger: 'blur' }
-  ],
-  roleCode: [
-    { required: true, message: '请输入角色编码', trigger: 'blur' }
+  rolename: [
+    { required: true, message: '请输入角色名称', trigger: 'blur' },
+    { min: 2, max: 50, message: '长度在 2 到 50 个字符', trigger: 'blur' }
   ]
 }
 
-// 加载数据
-const loadData = () => {
+// 格式化日期时间
+const formatDateTime = (datetime) => {
+  if (!datetime) return '-'
+  const date = new Date(datetime)
+  return date.toLocaleString('zh-CN', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit'
+  })
+}
+
+// 加载角色列表
+const loadRoleList = async () => {
   loading.value = true
-  // TODO: 调用 API 获取数据
-  setTimeout(() => {
+  try {
+    const response = await request.post('/role/getrolelist', {
+      rolename: searchForm.rolename
+    })
+    
+    if (response.data.code === '0000') {
+      let list = response.data.data || []
+      // 前端分页
+      pagination.total = list.length
+      const start = (pagination.page - 1) * pagination.pageSize
+      const end = start + pagination.pageSize
+      tableData.value = list.slice(start, end)
+    } else {
+      ElMessage.error(response.data.message || '获取角色列表失败')
+    }
+  } catch (error) {
+    console.error('加载角色列表失败:', error)
+    ElMessage.error('加载角色列表失败')
+  } finally {
     loading.value = false
-  }, 500)
+  }
+}
+
+// 搜索
+const handleSearch = () => {
+  pagination.page = 1
+  loadRoleList()
+}
+
+// 重置
+const handleReset = () => {
+  searchForm.rolename = ''
+  pagination.page = 1
+  loadRoleList()
 }
 
 // 新增
 const handleAdd = () => {
   dialogTitle.value = '新增角色'
+  isEdit.value = false
   resetForm()
   dialogVisible.value = true
 }
@@ -149,63 +196,105 @@ const handleAdd = () => {
 // 编辑
 const handleEdit = (row) => {
   dialogTitle.value = '编辑角色'
-  Object.assign(form, row)
+  isEdit.value = true
+  
+  // 填充表单数据
+  Object.keys(form).forEach(key => {
+    form[key] = row[key] || ''
+  })
+  
   dialogVisible.value = true
 }
 
 // 删除
 const handleDelete = (row) => {
-  ElMessageBox.confirm('确定要删除该角色吗？', '提示', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
-    type: 'warning'
-  }).then(() => {
-    // TODO: 调用 API 删除
-    ElMessage.success('删除成功')
-    loadData()
+  ElMessageBox.confirm(
+    `确定要删除角色 "${row.rolename}" 吗？`,
+    '警告',
+    {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning'
+    }
+  ).then(async () => {
+    try {
+      const response = await request.post('/role/delrole', {
+        rowguid: row.rowguid
+      })
+      
+      if (response.data.code === '0000') {
+        ElMessage.success('删除成功')
+        loadRoleList()
+      } else {
+        ElMessage.error(response.data.message || '删除失败')
+      }
+    } catch (error) {
+      console.error('删除失败:', error)
+      ElMessage.error('删除失败')
+    }
   }).catch(() => {})
 }
 
-// 提交
+// 提交表单
 const handleSubmit = async () => {
   if (!formRef.value) return
   
-  await formRef.value.validate((valid) => {
-    if (valid) {
-      submitLoading.value = true
-      // TODO: 调用 API 保存
-      setTimeout(() => {
-        submitLoading.value = false
+  await formRef.value.validate(async (valid) => {
+    if (!valid) return
+    
+    submitLoading.value = true
+    try {
+      let response
+      if (isEdit.value) {
+        // 编辑
+        response = await request.post('/role/editrole', form)
+      } else {
+        // 新增
+        response = await request.post('/role/addrole', form)
+      }
+      
+      if (response.data.code === '0000') {
+        ElMessage.success(isEdit.value ? '编辑成功' : '新增成功')
         dialogVisible.value = false
-        ElMessage.success('保存成功')
-        loadData()
-      }, 500)
+        loadRoleList()
+      } else {
+        ElMessage.error(response.data.message || '操作失败')
+      }
+    } catch (error) {
+      console.error('提交失败:', error)
+      ElMessage.error('操作失败')
+    } finally {
+      submitLoading.value = false
     }
   })
 }
 
 // 重置表单
 const resetForm = () => {
-  form.id = null
-  form.roleName = ''
-  form.roleCode = ''
-  form.description = ''
+  if (formRef.value) {
+    formRef.value.resetFields()
+  }
+  Object.keys(form).forEach(key => {
+    form[key] = ''
+  })
 }
 
 // 分页大小改变
 const handleSizeChange = (val) => {
   pagination.pageSize = val
-  loadData()
+  pagination.page = 1
+  loadRoleList()
 }
 
 // 页码改变
 const handlePageChange = (val) => {
   pagination.page = val
-  loadData()
+  loadRoleList()
 }
 
+// 初始化
 onMounted(() => {
-  loadData()
+  loadRoleList()
 })
 </script>
 
@@ -218,6 +307,10 @@ onMounted(() => {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.search-form {
+  margin-bottom: 20px;
 }
 
 .pagination {

@@ -1,0 +1,1 @@
+import{_ as n,o as s,c as a,b as e,w as _,r as t}from"./index-BR5j2brL.js";const r={},l={class:"page-container"};function d(p,i){const c=t("el-empty"),o=t("el-card");return s(),a("div",l,[e(o,null,{default:_(()=>[e(c,{description:"文章管理功能开发中，敬请期待..."})]),_:1})])}const f=n(r,[["render",d],["__scopeId","data-v-4520e69c"]]);export{f as default};

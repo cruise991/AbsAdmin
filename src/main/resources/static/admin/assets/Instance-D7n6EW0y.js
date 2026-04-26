@@ -1,0 +1,1 @@
+import{_ as n,o as a,c as s,b as e,w as _,r as t}from"./index-BR5j2brL.js";const r={},d={class:"page-container"};function l(p,i){const c=t("el-empty"),o=t("el-card");return a(),s("div",d,[e(o,null,{default:_(()=>[e(c,{description:"流程实例功能开发中，敬请期待..."})]),_:1})])}const f=n(r,[["render",l],["__scopeId","data-v-aad3ef89"]]);export{f as default};

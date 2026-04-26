@@ -1,1 +1,0 @@
-import{_ as n,o as a,c as s,b as e,w as _,r as o}from"./index-DEY9an6b.js";const r={},l={class:"page-container"};function d(p,i){const t=o("el-empty"),c=o("el-card");return a(),s("div",l,[e(c,null,{default:_(()=>[e(t,{description:"系统配置功能开发中，敬请期待..."})]),_:1})])}const f=n(r,[["render",d],["__scopeId","data-v-2c1e9e1a"]]);export{f as default};

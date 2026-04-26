@@ -1,1 +1,0 @@
-import{_ as n,o as s,c as a,b as e,w as _,r as t}from"./index-DEY9an6b.js";const r={},l={class:"page-container"};function d(p,i){const o=t("el-empty"),c=t("el-card");return s(),a("div",l,[e(c,null,{default:_(()=>[e(o,{description:"成绩管理功能开发中，敬请期待..."})]),_:1})])}const f=n(r,[["render",d],["__scopeId","data-v-263363be"]]);export{f as default};

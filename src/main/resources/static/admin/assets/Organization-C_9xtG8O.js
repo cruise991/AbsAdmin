@@ -1,1 +1,0 @@
-import{_ as n,o as a,c as s,b as e,w as _,r as t}from"./index-DEY9an6b.js";const r={},d={class:"page-container"};function l(p,i){const o=t("el-empty"),c=t("el-card");return a(),s("div",d,[e(c,null,{default:_(()=>[e(o,{description:"组织架构管理功能开发中，敬请期待..."})]),_:1})])}const f=n(r,[["render",l],["__scopeId","data-v-256beda8"]]);export{f as default};

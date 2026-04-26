@@ -1,1 +1,0 @@
-import{_ as n,o as s,c as a,b as e,w as _,r as t}from"./index-DEY9an6b.js";const r={},l={class:"page-container"};function d(p,i){const c=t("el-empty"),o=t("el-card");return s(),a("div",l,[e(o,null,{default:_(()=>[e(c,{description:"菜单权限管理功能开发中，敬请期待..."})]),_:1})])}const f=n(r,[["render",d],["__scopeId","data-v-3613363c"]]);export{f as default};
