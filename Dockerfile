@@ -1,5 +1,5 @@
 # ============================================================
-# AbsAdmin Dockerfile - 多阶段构建优化
+# EduFlow Platform Dockerfile - 多阶段构建优化
 # ============================================================
 
 # -------------------- 阶段1: 构建阶段 --------------------
@@ -21,8 +21,8 @@ RUN mvn clean package -DskipTests -B -s /usr/share/maven/ref/settings.xml
 FROM eclipse-temurin:17-jdk-jammy
 
 # 设置元数据
-LABEL maintainer="AbsAdmin Team"
-LABEL description="AbsAdmin Spring Boot Application"
+LABEL maintainer="EduFlow Platform Team"
+LABEL description="EduFlow Platform Spring Boot Application"
 LABEL version="0.0.1-SNAPSHOT"
 
 # 设置工作目录
@@ -41,17 +41,17 @@ COPY src/main/resources/font/*.ttf /usr/share/fonts/truetype/
 RUN fc-cache -fv
 
 # 从构建阶段复制 JAR 包
-COPY --from=builder /build/target/AbsAdmin.jar app.jar
+COPY --from=builder /build/target/EduFlow-Platform.jar app.jar
 
 # 创建非 root 用户（安全最佳实践）
-RUN groupadd -r absadmin && useradd -r -g absadmin -m absadmin
+RUN groupadd -r eduflow && useradd -r -g eduflow -m eduflow
 
 # 创建必要的目录并设置权限
 RUN mkdir -p /app/uploads /app/logs /app/drivers \
-    && chown -R absadmin:absadmin /app
+    && chown -R eduflow:eduflow /app
 
 # 切换到非 root 用户
-USER absadmin
+USER eduflow
 
 # 暴露端口
 EXPOSE 8020

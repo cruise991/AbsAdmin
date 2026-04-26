@@ -107,3 +107,5 @@ secrets/
 
 # Application specific
 # 如果有其他不需要上传的文件，在这里添加
+dist/
+node_modules/

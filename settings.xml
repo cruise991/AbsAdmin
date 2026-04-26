@@ -6,25 +6,53 @@
 
     <!-- 阿里云 Maven 镜像配置 -->
     <mirrors>
-        <!-- 阿里云公共仓库（主镜像） -->
-        <mirror>
-            <id>aliyun-public</id>
-            <mirrorOf>central</mirrorOf>
-            <name>Aliyun Public Repository</name>
-            <url>https://maven.aliyun.com/repository/public</url>
-        </mirror>
-        
-        <!-- 华为云 Maven 镜像（备选） -->
+        <!-- 华为云 Maven 镜像（主镜像，更稳定） -->
         <mirror>
             <id>huaweicloud</id>
             <mirrorOf>*</mirrorOf>
             <name>Huawei Cloud Maven Repository</name>
             <url>https://repo.huaweicloud.com/repository/maven/</url>
         </mirror>
+        
+        <!-- 阿里云公共仓库（备选） -->
+        <mirror>
+            <id>aliyun-public</id>
+            <mirrorOf>central</mirrorOf>
+            <name>Aliyun Public Repository</name>
+            <url>https://maven.aliyun.com/repository/public</url>
+        </mirror>
     </mirrors>
 
     <!-- 配置文件 -->
     <profiles>
+        <profile>
+            <id>huaweicloud</id>
+            <repositories>
+                <repository>
+                    <id>central</id>
+                    <url>https://repo.huaweicloud.com/repository/maven/</url>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                </repository>
+            </repositories>
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>central</id>
+                    <url>https://repo.huaweicloud.com/repository/maven/</url>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                </pluginRepository>
+            </pluginRepositories>
+        </profile>
+        
         <profile>
             <id>aliyun</id>
             <repositories>
@@ -65,7 +93,7 @@
 
     <!-- 默认激活的配置 -->
     <activeProfiles>
-        <activeProfile>aliyun</activeProfile>
+        <activeProfile>huaweicloud</activeProfile>
         <activeProfile>wagon-http</activeProfile>
     </activeProfiles>
 

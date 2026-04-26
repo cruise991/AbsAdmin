@@ -44,9 +44,10 @@
 
 ### 🤖 AI 智能集成
 - **多模型支持**：DeepSeek、豆包、GLM、OpenAI 等多 AI 提供商
+- **智能对话助手**：自然语言对话式 AI 交互，非文章化输出
 - **智能内容生成**：AI 辅助文章创作、营销文案生成
-- **自动化任务**：定时任务调度，自动化内容生产
-- **灵活配置**：可切换的 AI 服务提供商
+- **统一访问入口**：80 端口统一访问，Nginx 智能路由
+- **灵活配置**：通过环境变量配置 AI API Key，支持热切换
 
 ### 📁 文件管理系统
 - **阿里云 OSS 集成**：云端文件存储和管理
@@ -73,12 +74,14 @@
 - **HTTP 客户端**：OkHttp 4.12.0
 - **模板引擎**：Thymeleaf
 
-### 前端技术
-- **UI 框架**：Bootstrap 5
-- **JavaScript**：jQuery 3.x
-- **图表库**：ECharts
-- **富文本编辑器**：UEditor
-- **弹窗组件**：Layer
+### 前端技术（v3.0 - 全新升级）
+- **核心框架**：Vue 3.4 + Composition API
+- **UI 框架**：Element Plus 2.6
+- **构建工具**：Vite 5.2
+- **状态管理**：Pinia 2.1
+- **路由管理**：Vue Router 4.3
+- **HTTP 客户端**：Axios 1.6
+- **图表库**：ECharts 5.5
 
 ### 部署与运维
 - **容器化**：Docker & Docker Compose
@@ -117,7 +120,7 @@ mysql -u root -p absframe < src/main/webapp/sql/absframe.sql
 
 #### 3. 配置数据库连接
 
-编辑 `src/main/resources/application.properties`：
+**本地开发**：编辑 `src/main/resources/application.properties`
 
 ```properties
 spring.datasource.url=jdbc:mysql://localhost:3306/absframe?serverTimezone=Asia/Shanghai
@@ -125,15 +128,32 @@ spring.datasource.username=your_username
 spring.datasource.password=your_password
 ```
 
+**Docker 部署**：编辑 `.env` 文件
+
+```bash
+SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/absframe?serverTimezone=Asia/Shanghai
+SPRING_DATASOURCE_USERNAME=root
+SPRING_DATASOURCE_PASSWORD=your_password
+```
+
 #### 4. 配置 AI 服务（可选）
 
-如需使用 AI 功能，在 `application.properties` 中配置相应的 API Key：
+**本地开发**：在 `application.properties` 中配置
 
 ```properties
 deepseek.api-key=your_deepseek_api_key
 doubao.api-key=your_doubao_api_key
 glm.api-key=your_glm_api_key
 openai.api-key=your_openai_api_key
+```
+
+**Docker 部署**：在 `.env` 文件中配置
+
+```bash
+DEEPSEEK_API_KEY=your_deepseek_api_key
+DOUBAO_API_KEY=your_doubao_api_key
+GLM_API_KEY=your_glm_api_key
+OPENAI_API_KEY=your_openai_api_key
 ```
 
 #### 5. 编译并运行
@@ -146,25 +166,56 @@ mvn clean package -DskipTests
 java -jar target/EduFlow-Platform.jar
 ```
 
-应用将在 `http://localhost:8020` 启动
+后端应用将在 `http://localhost:8020` 启动
+
+**注意**：本地开发时前端需要单独启动（见前端开发部分）
 
 ### 方式二：Docker 部署（推荐）
 
-#### 1. 构建镜像
+#### 1. 配置环境变量
+
+编辑 `.env` 文件（如果不存在则创建）：
 
 ```bash
-docker build -t eduflow-platform:latest .
+# 数据库配置
+MYSQL_ROOT_PASSWORD=your_mysql_password
+MYSQL_DATABASE=absframe
+
+# 后端配置
+SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/absframe?serverTimezone=Asia/Shanghai
+SPRING_DATASOURCE_USERNAME=root
+SPRING_DATASOURCE_PASSWORD=your_mysql_password
+
+# AI API Keys
+DEEPSEEK_API_KEY=your_deepseek_api_key
+DOUBAO_API_KEY=your_doubao_api_key
+GLM_API_KEY=your_glm_api_key
+OPENAI_API_KEY=your_openai_api_key
+
+# 端口配置
+APP_PORT=8020
+FRONTEND_PORT=3006
+NGINX_HTTP_PORT=80
+NGINX_HTTPS_PORT=443
 ```
 
-#### 2. 使用 Docker Compose 启动
+#### 2. 启动所有服务
 
 ```bash
-docker-compose up -d
+# 构建并启动所有服务（后端 + 前端 + Nginx + MySQL）
+docker-compose up -d --build
 ```
 
 #### 3. 访问应用
 
-打开浏览器访问：`http://localhost:8020`
+**统一入口（推荐）**：`http://localhost:80/`
+- 通过 Nginx 统一代理，所有请求由 80 端口进入
+- 自动路由到 EduFlow Frontend
+- API 请求自动代理到后端
+
+**备用入口**：`http://localhost:3006/`
+- 直接访问 EduFlow Frontend
+- 功能与 80 端口完全一致
 
 默认管理员账号：
 - 用户名：`admin`
@@ -177,16 +228,23 @@ docker-compose up -d
 ```
 EduFlow-Platform/
 ├── src/main/java/com/
-│   ├── EduFlowMain.java              # 应用主入口
+│   ├── AbsAdminMain.java              # 应用主入口
 │   └── abs/
 │       ├── system/                    # 系统管理模块
-│       │   ├── controller/            # 控制器层（23个）
+│       │   ├── controller/            # 控制器层（24个）
+│       │   │   ├── AiCreateController.java      # AI 内容生成
+│       │   │   ├── AbsUserController.java       # 用户管理
+│       │   │   ├── StudentInfoController.java   # 学生管理
+│       │   │   └── ...                          # 其他控制器
 │       │   ├── service/               # 服务层
 │       │   ├── impl/                  # 服务实现
 │       │   ├── domain/                # 实体类
 │       │   ├── mapper/                # 数据访问层
-│       │   ├── filter/                # 过滤器
-│       │   ├── util/                  # 工具类
+│       │   ├── filter/                # 过滤器和拦截器
+│       │   │   ├── AbsHandlerInterceptor.java   # 登录拦截器
+│       │   │   ├── NoNeedLogin.java             # 免登录注解
+│       │   │   └── AbsWebMvcConfigurerAdapter.java
+│       │   ├── util/                  # 工具类（25个）
 │       │   └── config/                # 配置类
 │       ├── article/                   # 文章管理模块
 │       │   ├── controller/
@@ -198,19 +256,127 @@ EduFlow-Platform/
 │           ├── service/
 │           └── impl/
 ├── src/main/resources/
-│   ├── application.properties         # 应用配置
-│   ├── db/                            # MyBatis XML 映射文件
+│   ├── application.properties         # 主配置文件
+│   ├── application-docker.properties  # Docker 环境配置
+│   ├── db/                            # MyBatis XML 映射文件（22个）
 │   ├── mapper/                        # 自定义 Mapper
 │   ├── templates/                     # Thymeleaf 模板
 │   └── www/                           # 静态资源（CSS/JS/Images）
 ├── src/main/webapp/
 │   ├── sql/                           # 数据库脚本
 │   └── driver/                        # ChromeDriver（爬虫用）
+├── frontend/                          # Vue3 前端项目
+│   ├── src/
+│   │   ├── views/                     # 页面组件
+│   │   │   ├── Chat.vue               # AI 智能助手
+│   │   │   ├── Layout.vue             # 主布局
+│   │   │   ├── Login.vue              # 登录页面
+│   │   │   ├── dashboard/             # 仪表盘
+│   │   │   ├── student/               # 学生管理
+│   │   │   ├── system/                # 系统管理
+│   │   │   └── ...
+│   │   ├── router/                    # 路由配置
+│   │   ├── api/                       # API 接口
+│   │   └── assets/                    # 静态资源
+│   ├── nginx.conf                     # Nginx 配置
+│   ├── Dockerfile                     # 前端 Dockerfile
+│   ├── package.json                   # 依赖配置
+│   └── vite.config.js                 # Vite 配置
+├── nginx/                             # Nginx 配置目录
+│   ├── nginx.conf                     # Nginx 主配置
+│   └── conf.d/
+│       └── absadmin.conf              # 站点配置（80/443端口）
 ├── docker/                            # Docker 配置文件
 ├── docs/                              # 本地文档（不上传 Git）
+│   ├── AI-FIX-COMPLETE.md             # AI 问题修复记录
+│   ├── 方案A修复完成报告.md           # 架构优化报告
+│   └── ...                            # 其他开发文档
+├── .env                               # 环境变量配置
+├── docker-compose.yml                 # Docker Compose 配置
+├── Dockerfile                         # 后端 Dockerfile
+├── settings.xml                       # Maven 镜像配置
 ├── pom.xml                            # Maven 配置
+├── .gitignore                         # Git 忽略配置
 └── README.md                          # 项目说明
 ```
+
+---
+
+## 🔄 最近更新 (v3.0)
+
+### 2026-04-26 重大更新
+
+#### ✨ 新功能
+- **Vue3 前端重构**：从 Bootstrap/jQuery 升级到 Vue 3 + Element Plus
+- **AI 智能助手优化**：
+  - 自然对话风格，避免文章化输出
+  - 支持连续对话和上下文记忆
+  - 统一通过 80 端口访问
+- **统一访问入口**：80 端口通过 Nginx 统一代理所有请求
+- **Docker 全面优化**：
+  - 多阶段构建，减少镜像体积
+  - 环境变量配置，支持灵活部署
+  - 健康检查，自动重启
+- **前端独立部署**：Nginx + Vue3 前端容器化
+
+#### 🐛 问题修复
+- 修复 AI 接口拦截器拦截问题（添加 `@NoNeedLogin` 注解）
+- 修复 Nginx 代理路径重写导致的 404 错误
+- 修复前后端响应格式不一致问题（code 字段类型对齐）
+- 移除流式对话页面，统一使用 EduFlow Platform
+- 修复 Docker 构建时 Maven 镜像 SSL 握手失败问题
+
+#### 🔧 技术改进
+- 优化 Prompt 设计，AI 回复更自然友好
+- 统一 API 响应格式：`{ code: "0000", data: "...", message: "..." }`
+- 前端响应检查改为字符串比较：`code === '0000'`
+- Nginx 配置优化，AI 接口不走路径重写
+- Maven 镜像切换为华为云，提高构建稳定性
+
+---
+
+## 📊 系统架构
+
+### 部署架构
+
+```
+用户访问 http://localhost:80/
+    ↓
+┌─────────────────┐
+│   Nginx (80)    │  统一入口
+│  absadmin-nginx │
+└────────┬────────
+         │
+    ┌────┴────┐
+    │         │
+静态资源   API 请求
+    │         │
+    ↓         ↓
+┌──────┐  ┌──────────────┐
+│ Vue3 │  │ Spring Boot  │
+│前端  │  │  (8020)      │
+│3006  │  │ absadmin-app │
+└──────┘  └──────┬───────┘
+                 │
+            ┌────┴────┐
+            │         │
+        业务逻辑   数据库
+            │         │
+            ↓         ↓
+      ┌──────────┐ ┌──────
+      │ DeepSeek │ │MySQL │
+      │  AI API  │ │3306  │
+      └──────────┘ └──────
+```
+
+### 核心组件
+
+| 组件 | 容器名 | 端口 | 说明 |
+|------|--------|------|------|
+| Nginx | absadmin-nginx | 80, 443 | 反向代理、静态资源 |
+| EduFlow Frontend | eduflow-frontend | 3006 | Vue3 前端应用 |
+| Spring Boot | absadmin-app | 8020 | 后端 API 服务 |
+| MySQL | absadmin-mysql | 3306 | 关系型数据库 |
 
 ---
 
@@ -244,9 +410,13 @@ EduFlow-Platform/
 - 产品展示
 
 ### 5. AI 智能
-- AI 内容生成 (`AiCreateController`)
-- 多模型切换
-- 定时任务
+- AI 对话助手 (`AiCreateController`)
+  - 自然语言对话风格
+  - 支持连续对话
+  - 多模型切换（DeepSeek/豆包/GLM/OpenAI）
+  - RESTful API 调用
+- 定时任务调度
+- AI 内容生成
 
 ### 6. 文件管理
 - 文件上传下载 (`AbsFileInfoController`)
@@ -256,6 +426,49 @@ EduFlow-Platform/
 ### 7. OpenAPI
 - 股票数据接口 (`StockOpenApiController`)
 - 应用管理 (`AbsAppInfoController`)
+
+---
+
+## 💻 前端开发
+
+### 本地开发前端
+
+#### 1. 进入前端目录
+
+```bash
+cd frontend
+```
+
+#### 2. 安装依赖
+
+```bash
+npm install
+```
+
+#### 3. 启动开发服务器
+
+```bash
+npm run dev
+```
+
+前端将在 `http://localhost:3006` 启动，支持热更新
+
+#### 4. 构建生产版本
+
+```bash
+npm run build
+```
+
+构建产物输出到 `dist/` 目录
+
+### 前端技术栈
+
+- **Vue 3.4**：Composition API、响应式系统
+- **Element Plus 2.6**：企业级 UI 组件库
+- **Vite 5.2**：快速构建工具
+- **Axios 1.6**：HTTP 请求库
+- **Vue Router 4.3**：路由管理
+- **Pinia 2.1**：状态管理
 
 ---
 

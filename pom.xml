@@ -248,6 +248,25 @@
   
       <build>
           <finalName>EduFlow-Platform</finalName>
+          <resources>
+              <resource>
+                  <directory>src/main/resources</directory>
+                  <includes>
+                      <include>**/*.xml</include>
+                      <include>**/*.properties</include>
+                      <include>**/*.txt</include>
+                      <include>**/*.ttf</include>
+                      <include>**/*.png</include>
+                      <include>**/*.html</include>
+                      <include>**/*.css</include>
+                      <include>**/*.js</include>
+                      <include>**/*.json</include>
+                      <include>**/*.py</include>
+                      <include>**/driver/**</include>
+                  </includes>
+                  <filtering>false</filtering>
+              </resource>
+          </resources>
           <plugins>
               <plugin>
                   <groupId>org.springframework.boot</groupId>

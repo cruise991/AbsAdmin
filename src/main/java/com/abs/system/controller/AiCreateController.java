@@ -26,6 +26,7 @@ import org.springframework.web.client.RestTemplate;
 import com.abs.system.api.IAbsFileInfo;
 import com.abs.system.api.IAbsSysConfig;
 import com.abs.system.domain.AbsFileInfo;
+import com.abs.system.filter.NoNeedLogin;
 import com.abs.system.filter.ToToken;
 import com.abs.system.util.AbsSessionHelper;
 import com.abs.system.util.MSG;
@@ -97,11 +98,12 @@ public class AiCreateController {
 	private IAbsSysConfig configService;
 
 	/**
-	 * AI创作接口
+	 * AI创作接口（无需登录）
 	 * 
 	 * @param reqMap 请求参数
 	 * @return 创作结果
 	 */
+	@NoNeedLogin
 	@PostMapping("/create")
 	@ResponseBody
 	public String create(@RequestBody Map<String, Object> reqMap) {
@@ -423,8 +425,8 @@ public class AiCreateController {
 		Map<String, Object> requestBody = new HashMap<>();
 		requestBody.put("model", "deepseek-chat");
 		requestBody.put("messages",
-				new Object[] { Map.of("role", "system", "content", "你是一个专业的内容创作助手，根据用户的要求生成高质量的文章。"),
-						Map.of("role", "user", "content", generatePrompt(topic, style, length, keywords)) });
+				new Object[] { Map.of("role", "system", "content", "你是一个友好、专业的AI助手，用自然对话的方式回答用户问题。回答要简洁明了，避免过于正式或文章化的结构。"),
+						Map.of("role", "user", "content", generateChatPrompt(topic, style, length, keywords)) });
 		requestBody.put("temperature", 0.7);
 		requestBody.put("max_tokens", 2000);
 
@@ -542,6 +544,26 @@ public class AiCreateController {
 
 	/**
 	 * 生成提示词
+	 */
+	/**
+	 * 生成对话提示词（用于AI助手场景）
+	 */
+	private String generateChatPrompt(String topic, String style, String length, String keywords) {
+		StringBuilder prompt = new StringBuilder();
+		prompt.append("用户问题：").append(topic).append("\n\n");
+		prompt.append("请用自然、友好的对话方式回答，不要使用文章式的结构和格式。\n");
+		prompt.append("要求：\n");
+		prompt.append("1. 语气：自然对话，像朋友聊天一样\n");
+		prompt.append("2. 结构：简洁明了，避免长篇大论\n");
+		prompt.append("3. 格式：使用简单的段落，避免复杂的标题层级\n");
+		if (!keywords.isEmpty()) {
+			prompt.append("4. 重点内容：").append(keywords).append("\n");
+		}
+		return prompt.toString();
+	}
+
+	/**
+	 * 生成文章提示词（用于内容创作场景）
 	 */
 	private String generatePrompt(String topic, String style, String length, String keywords) {
 		StringBuilder prompt = new StringBuilder();

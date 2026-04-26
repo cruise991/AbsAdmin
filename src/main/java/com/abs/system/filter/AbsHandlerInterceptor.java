@@ -39,6 +39,12 @@ public class AbsHandlerInterceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
 			Object handler) throws Exception {
 		
+		// 跳过 AI 接口的登录验证（AI助手是公开功能）
+		String requestURI = httpServletRequest.getRequestURI();
+		if (requestURI.startsWith("/api/ai/")) {
+			logger.info("跳过 AI 接口登录验证: {}", requestURI);
+			return true;
+		}
 		
 		
 		if (handler instanceof HandlerMethod) {

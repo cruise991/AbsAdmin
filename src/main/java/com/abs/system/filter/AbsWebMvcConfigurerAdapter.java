@@ -30,9 +30,10 @@ public class AbsWebMvcConfigurerAdapter implements WebMvcConfigurer { // 改为�
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) { // 改为 public
-        registry.addRedirectViewController("/", "canvas/index.html");
-        registry.addRedirectViewController("/index", "canvas/index.html");
-        registry.addRedirectViewController("/index.html", "canvas/index.html");
+        // 移除流式对话页面的重定向，统一使用 EduFlow Platform
+        // registry.addRedirectViewController("/", "canvas/index.html");
+        // registry.addRedirectViewController("/index", "canvas/index.html");
+        // registry.addRedirectViewController("/index.html", "canvas/index.html");
     }
 
     @Override
