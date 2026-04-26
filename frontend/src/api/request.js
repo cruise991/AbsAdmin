@@ -33,18 +33,18 @@ request.interceptors.response.use(
   (response) => {
     const res = response.data
     
-    // 如果返回的状态码不是 200，说明接口有问题
-    if (res.code && res.code !== 200) {
-      ElMessage.error(res.message || '请求失败')
+    // 后端返回的code是字符串"0000"表示成功
+    if (res.code && res.code !== '0000' && res.code !== 200) {
+      ElMessage.error(res.msg || res.message || '请求失败')
       
       // 401: 未授权，需要重新登录
-      if (res.code === 401) {
+      if (res.code === 401 || res.code === '0401') {
         localStorage.removeItem('token')
         localStorage.removeItem('userInfo')
         router.push('/login')
       }
       
-      return Promise.reject(new Error(res.message || '请求失败'))
+      return Promise.reject(new Error(res.msg || res.message || '请求失败'))
     }
     
     return res
