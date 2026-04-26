@@ -257,9 +257,63 @@ const handleDetail = (row) => {
   ElMessage.info(`查看 ${row.studentName} 的成绩详情（演示）`)
 }
 
-// 导出
+// 导出成绩为 Excel
 const handleExport = () => {
-  ElMessage.success('成绩导出功能已触发（演示）')
+  if (tableData.value.length === 0) {
+    ElMessage.warning('没有数据可导出')
+    return
+  }
+  
+  try {
+    // 导入 xlsx 库
+    import('xlsx').then(XLSX => {
+      // 准备导出数据
+      const exportData = tableData.value.map(item => ({
+        '学生姓名': item.studentName,
+        '班级': item.className,
+        '学号': item.studentNo,
+        '语文': item.chinese,
+        '数学': item.math,
+        '英语': item.english,
+        '总分': item.total,
+        '平均分': item.average.toFixed(1),
+        '排名': item.rank
+      }))
+      
+      // 创建工作簿
+      const wb = XLSX.utils.book_new()
+      const ws = XLSX.utils.json_to_sheet(exportData)
+      
+      // 设置列宽
+      ws['!cols'] = [
+        { wch: 12 }, // 学生姓名
+        { wch: 15 }, // 班级
+        { wch: 15 }, // 学号
+        { wch: 8 },  // 语文
+        { wch: 8 },  // 数学
+        { wch: 8 },  // 英语
+        { wch: 8 },  // 总分
+        { wch: 10 }, // 平均分
+        { wch: 8 }   // 排名
+      ]
+      
+      XLSX.utils.book_append_sheet(wb, ws, '成绩表')
+      
+      // 生成文件名
+      const fileName = `成绩表_${new Date().getTime()}.xlsx`
+      
+      // 下载文件
+      XLSX.writeFile(wb, fileName)
+      
+      ElMessage.success('成绩导出成功')
+    }).catch(err => {
+      console.error('导出失败:', err)
+      ElMessage.error('导出失败，请稍后重试')
+    })
+  } catch (error) {
+    console.error('导出失败:', error)
+    ElMessage.error('导出失败，请稍后重试')
+  }
 }
 
 // 分页大小改变

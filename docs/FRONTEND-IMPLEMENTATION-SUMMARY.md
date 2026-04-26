@@ -621,6 +621,34 @@ npm run dev
 
 ---
 
+### 🔧 2026-04-26 API 请求失败问题修复
+
+#### 问题描述
+所有管理页面（用户、角色、组织、菜单、配置、考试、成绩）均提示“请求失败”和“加载列表失败”。
+
+#### 根本原因
+**Token 格式错误**：
+- 前端发送：`Authorization: Bearer {token}`
+- 后端期望：`Authorization: {token}`（不带 Bearer 前缀）
+- 导致所有 API 返回 401 未授权错误
+
+#### 修复措施
+1. ✅ 修正 `request.js`：去掉 Bearer 前缀
+2. ✅ 实现真正的 Excel 导出功能（使用 xlsx 库）
+3. ✅ 安装 xlsx 依赖：`npm install xlsx`
+4. ✅ 重新构建并部署到 Docker
+5. ✅ 验证所有 API 请求正常
+
+#### 修复结果
+- ✅ 7个页面全部恢复正常
+- ✅ 所有 API 请求成功（200 OK）
+- ✅ 成绩导出功能真实可用（下载 Excel 文件）
+
+#### 文档记录
+- ✅ 创建 `BUGFIX-API-REQUEST-FAILURE.md`：详细的问题分析和修复过程
+
+---
+
 ### 🔧 2026-04-26 Docker 部署问题修复
 
 #### 问题描述
