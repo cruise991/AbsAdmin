@@ -72,6 +72,7 @@ src/main/webapp/driver/
 # Backup files
 *.bak
 *.backup
+backup-*
 
 # Test output
 test-output/
@@ -109,3 +110,8 @@ secrets/
 # 如果有其他不需要上传的文件，在这里添加
 dist/
 node_modules/
+
+# Build outputs
+target/
+frontend/dist/
+frontend/node_modules/

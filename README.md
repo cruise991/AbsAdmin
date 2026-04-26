@@ -223,6 +223,77 @@ docker-compose up -d --build
 - 用户名：`admin`
 - 密码：`123456`
 
+#### 📋 Docker 常用命令
+
+**服务管理**：
+```bash
+# 启动所有服务
+docker-compose -f docker/docker-compose.yml up -d
+
+# 停止所有服务
+docker-compose -f docker/docker-compose.yml down
+
+# 重建并启动
+docker-compose -f docker/docker-compose.yml up -d --build
+
+# 重启单个服务
+docker-compose -f docker/docker-compose.yml restart absadmin-app
+```
+
+**日志查看**：
+```bash
+# 查看所有日志
+docker-compose -f docker/docker-compose.yml logs -f
+
+# 查看应用日志
+docker-compose -f docker/docker-compose.yml logs -f absadmin-app
+
+# 查看数据库日志
+docker-compose -f docker/docker-compose.yml logs -f mysql
+```
+
+**数据库操作**：
+```bash
+# 进入 MySQL
+docker-compose -f docker/docker-compose.yml exec mysql mysql -uroot -p$MYSQL_ROOT_PASSWORD absframe
+
+# 备份数据库（使用脚本）
+./scripts/backup/backup-database.sh
+```
+
+**容器操作**：
+```bash
+# 进入应用容器
+docker-compose -f docker/docker-compose.yml exec absadmin-app bash
+
+# 查看资源使用
+docker stats
+```
+
+#### ⚠️ Docker 注意事项
+
+1. **首次启动**：需要 1-2 分钟初始化
+2. **配置文件**：确保 `.env` 文件存在且配置正确
+3. **JAR 包**：确保 `target/EduFlow-Platform.jar` 已构建
+4. **数据持久化**：数据存储在 Docker Volume 中
+5. **端口变更**：Docker Compose 文件已移动到 `docker/` 目录
+
+#### 🆘 Docker 故障排查
+
+```bash
+# 检查容器状态
+docker-compose -f docker/docker-compose.yml ps
+
+# 查看详细日志
+docker-compose -f docker/docker-compose.yml logs
+
+# 检查资源使用
+docker stats
+
+# 重启单个服务
+docker-compose -f docker/docker-compose.yml restart absadmin-app
+```
+
 ---
 
 ## 📂 项目结构
