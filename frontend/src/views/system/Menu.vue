@@ -188,10 +188,11 @@ const loadList = async () => {
     })
     
     if (response.data.code === '0000') {
-      tableData.value = response.data.data.list || []
-      pagination.total = response.data.data.count || 0
+      // 后端返回格式：{ code: '0000', data: [...], totalcount: N }
+      tableData.value = response.data.data || []
+      pagination.total = response.data.totalcount || 0
     } else {
-      ElMessage.error(response.data.message || '获取列表失败')
+      ElMessage.error(response.data.msg || response.data.message || '获取列表失败')
     }
   } catch (error) {
     console.error('加载列表失败:', error)

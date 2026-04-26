@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqls>
+	<sql ID="tsinfo">
+		<i ID="queryPageList">
+		    <![CDATA[
+		        select rowguid,siteurl,addtime,tsdate,tsstatus,tscode,tsmsg,objectguid from site_baiduts where $like(siteurl,sitename) order by addtime desc
+		    ]]>
+		</i>
+	
+		<i ID="queryPageTotal">
+		    <![CDATA[
+		        select count(1) from site_baiduts where $like(siteurl,sitename)
+		    ]]>
+		</i>
+		
+		<i ID="delByGuid">
+		    <![CDATA[
+		      delete from site_baiduts where rowguid={rowguid}
+		    ]]>
+		</i>
+		
+		<i ID="getTsInfoByGuid">
+		    <![CDATA[
+		      select * from site_baiduts where rowguid={rowguid}
+		    ]]>
+		</i>
+		
+		<i ID="addSiteUrl">
+		    <![CDATA[
+		      insert into site_baiduts (rowguid,siteurl,addtime,objectguid) values ({rowguid},{siteurl},NOW(),{objectguid})
+		    ]]>
+		</i>
+	</sql>
+</sqls>

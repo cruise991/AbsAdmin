@@ -150,19 +150,18 @@ const formatDateTime = (datetime) => {
 const loadRoleList = async () => {
   loading.value = true
   try {
-    const response = await request.post('/role/getrolelist', {
-      rolename: searchForm.rolename
+    const response = await request.post('/role/getlist', {
+      rolename: searchForm.rolename,
+      pagenum: pagination.page,
+      pagesize: pagination.pageSize
     })
     
     if (response.data.code === '0000') {
-      let list = response.data.data || []
-      // 前端分页
-      pagination.total = list.length
-      const start = (pagination.page - 1) * pagination.pageSize
-      const end = start + pagination.pageSize
-      tableData.value = list.slice(start, end)
+      // 后端返回格式：{ code: '0000', data: [...], totalcount: N }
+      tableData.value = response.data.data || []
+      pagination.total = response.data.totalcount || 0
     } else {
-      ElMessage.error(response.data.message || '获取角色列表失败')
+      ElMessage.error(response.data.msg || response.data.message || '获取角色列表失败')
     }
   } catch (error) {
     console.error('加载角色列表失败:', error)
